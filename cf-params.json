@@ -1,0 +1,12 @@
+[
+    { "ParameterKey": "KeyName",
+      "ParameterValue": "cdhstack_admin"
+    },
+    {"ParameterKey": "InstanceType",
+      "ParameterValue": "t2.micro"
+    },
+    {"ParameterKey": "ImageId",
+        "ParameterValue": "ami-8e0205f2"
+    }
+]
+  
