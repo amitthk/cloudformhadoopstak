@@ -1,0 +1,6 @@
+** cloudformation template for single node hadoop kickstarter
+#+BEGIN_SRC
+aws cloudformation create-stack --stack-name atk-test --template-body file://cloudformation-stack.yml --parameters file://cf-params.json
+
+aws cloudformation delete-stack --stack-name atk-test
+#+END_SRC
