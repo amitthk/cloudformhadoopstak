@@ -1,0 +1,18 @@
+[Unit]
+Description=Jupyter Workplace
+
+[Service]
+Type=simple
+PIDFile=/run/jupyter.pid
+ExecStart=/bin/bash -c '\
+           source /home/hadoop/.bash_profile \
+           unset XDG_RUNTIME_DIR \
+           /opt/python-3.6.2/bin/jupyter-notebook --config=/home/hadoop/.jupyter/jupyter_notebook_config.py'
+User=hadoop
+Group=hadoop
+WorkingDirectory=/home/hadoop
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

@@ -1,2 +1,18 @@
 ---
 # tasks file for jupyter
+
+- name: setup the jupyter environment
+  template:
+    src: jupyter.sh.j2
+    dest: /etc/profile.d/jupyter.sh
+
+- name: create the jupyter_notebook_config.py
+  template:
+    src: jupyter_notebook_config.py.j2
+    dest: /home/hadoop/.jupyter/jupyter_notebook_config.py
+
+
+- name: create the jupyter service
+  template:
+    src: jupyter.service.j2
+    dest: /etc/systemd/system/jupyter.service
