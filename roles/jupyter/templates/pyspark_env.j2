@@ -18,4 +18,7 @@ HADOOP_OPTS= -Djava.library.path=/opt/hadoop-2.7.3/lib/native
 YARN_CONF_DIR=/opt/hadoop-2.7.3/etc/hadoop
 HADOOP_MAPRED_HOME=/opt/hadoop-2.7.3
 CLASSPATH=.:/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.181-3.b13.el7_5.x86_64/jre/jre/lib:/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.181-3.b13.el7_5.x86_64/jre/lib:/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.181-3.b13.el7_5.x86_64/jre/lib/tools.jar:/opt/derby/lib/derby.jar:/opt/derby/lib/derbytools.jar
-PYSPARK_DRIVER_PYTHON_OPTS=notebook
+PYSPARK_SUBMIT_ARGS="pyspark-shell"
+PYSPARK_DRIVER_PYTHON=ipython
+PYSPARK_DRIVER_PYTHON_OPTS="'notebook' pyspark"
+PYSPARK_PYTHON=/opt/python-3.6.2/bin/python
