@@ -44,13 +44,13 @@ Resources:
           !Sub |
             #!/bin/bash -xe
             rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-            yum -y install python-pip git
+            yum -y install python-pip
             /bin/easy_install https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
             # Install Ansible from the metadata
             pip install ansible
             git clone https://github.com/amitthk/cloudformhadoopstak.git
             cd cloudformhadoopstak
-            ansible-playbook --connection=local -vvvv 127.0.0.1 main.yml > ansible_deploy.log 2>&1
+            ansible-playbook --connection=local -i hosts -vvvv main.yml &> ansible_install.log
     Metadata:
       AWS::CloudFormation::Init:
         configSets:
