@@ -24,7 +24,7 @@ Parameters:
     Type: String
     ConstraintDescription: must be the name of an existing ami Id
 Resources:
-  EC2Instance:
+  HdpEC2Instance:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType:
@@ -35,6 +35,15 @@ Resources:
         Ref: KeyName
       ImageId:
         Ref: ImageId
+      Tags:
+        - Key: Name
+          Value: ${AWS::StackName}-node
+      UserData: 
+        Fn::Base64: 
+          !Sub |
+            #!/bin/bash -xe
+            # Install Ansible from the metadata
+            /opt/aws/bin/cfn-init -v -s ${AWS::StackName} --resource HdpEC2Instance
     Metadata:
       AWS::CloudFormation::Init:
         configSets:
@@ -63,7 +72,6 @@ Resources:
               command: ansible --version
             5-pause-after-ansible:
               command: sleep 10s
-
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
