@@ -44,7 +44,7 @@ Resources:
           !Sub |
             #!/bin/bash -xe
             rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-            yum -y install python-pip
+            yum -y install python-pip git
             /bin/easy_install https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
             # Install Ansible from the metadata
             pip install ansible
