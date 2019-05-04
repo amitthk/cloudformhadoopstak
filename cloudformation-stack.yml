@@ -42,6 +42,9 @@ Resources:
         Fn::Base64: 
           !Sub |
             #!/bin/bash -xe
+            rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+            yum -y install python-pip
+            /bin/easy_install https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
             # Install Ansible from the metadata
             /opt/aws/bin/cfn-init -v -s ${AWS::StackName} --resource HdpEC2Instance
     Metadata:
@@ -86,22 +89,22 @@ Outputs:
   InstanceId:
     Description: InstanceId of the newly created EC2 instance
     Value:
-      Ref: EC2Instance
+      Ref: HdpEC2Instance
   AZ:
     Description: Availability Zone of the newly created EC2 instance
     Value:
       Fn::GetAtt:
-      - EC2Instance
+      - HdpEC2Instance
       - AvailabilityZone
   PublicDNS:
     Description: Public DNSName of the newly created EC2 instance
     Value:
       Fn::GetAtt:
-      - EC2Instance
+      - HdpEC2Instance
       - PublicDnsName
   PublicIP:
     Description: Public IP address of the newly created EC2 instance
     Value:
       Fn::GetAtt:
-      - EC2Instance
+      - HdpEC2Instance
       - PublicIp
