@@ -69,7 +69,7 @@ cat <<EOF > cf-params.json
     }
 ]
 EOF
-                    aws cloudformation create-stack --stack-name atk-test --template-body file://cloudformation-stack.yml --parameters file://cf-params.json
+                    aws --region=ap-southeast-1 cloudformation create-stack --stack-name atk-test --template-body file://cloudformation-stack.yml --parameters file://cf-params.json
                     '''
                 }
             }
