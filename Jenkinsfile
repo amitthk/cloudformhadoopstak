@@ -56,19 +56,19 @@ stages{
                 credentialsId: "${repo_bucket_credentials_id}", 
                 secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]){
                     sh '''#!/bin/bash -xe
-                    cat > cf-params.json <<EOF
-                    [
-                        { "ParameterKey": "KeyName",
-                        "ParameterValue": "cdhstack_admin"
-                        },
-                        {"ParameterKey": "InstanceType",
-                        "ParameterValue": "${INSTANCE_TYPE}"
-                        },
-                        {"ParameterKey": "ImageId",
-                            "ParameterValue": "${AMI_ID}"
-                        }
-                    ]
-                    EOF
+cat > cf-params.json <<EOF
+[
+    { "ParameterKey": "KeyName",
+    "ParameterValue": "cdhstack_admin"
+    },
+    {"ParameterKey": "InstanceType",
+    "ParameterValue": "${INSTANCE_TYPE}"
+    },
+    {"ParameterKey": "ImageId",
+        "ParameterValue": "${AMI_ID}"
+    }
+]
+EOF
                     aws cloudformation create-stack --stack-name atk-test --template-body file://cloudformation-stack.yml --parameters file://cf-params.json
                     '''
                 }
