@@ -1,0 +1,10 @@
+---
+- name: Prerequisites
+  gather_facts: False
+  hosts: all
+  become: yes
+  become_method: sudo
+  roles:
+    - common
+  tags:
+    - common

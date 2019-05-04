@@ -37,7 +37,8 @@ Resources:
         Ref: ImageId
       Tags:
         - Key: Name
-          Value: ${AWS::StackName}-node
+          Value:
+            Ref: AWS::StackName
       UserData: 
         Fn::Base64: 
           !Sub |
@@ -46,7 +47,10 @@ Resources:
             yum -y install python-pip
             /bin/easy_install https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
             # Install Ansible from the metadata
-            /opt/aws/bin/cfn-init -v -s ${AWS::StackName} --resource HdpEC2Instance
+            pip install ansible
+            git clone https://github.com/amitthk/cloudformhadoopstak.git
+            cd cloudformhadoopstak
+            ansible-playbook --connection=local -vvvv 127.0.0.1 main.yml > ansible_deploy.log 2>&1
     Metadata:
       AWS::CloudFormation::Init:
         configSets:
