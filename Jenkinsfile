@@ -30,7 +30,7 @@ stages{
         env.SPOT_PRICE = "$params.SPOT_PRICE"
         env.PLAYBOOK_TAGS = "$params.PLAYBOOK_TAGS"
         env.APP_ID = getEnvVar("${env.DEPLOY_ENV}",'APP_ID')
-        env.repo_bucket_credentials_id = "s3repoadmin";
+        env.repo_bucket_credentials_id = "ec2s3admin";
         env.AMI_ID = "ami-8e0205f2";
         env.aws_s3_bucket_name = 'jvcdp-repo';
         env.aws_s3_bucket_region = 'ap-southeast-1';
@@ -95,11 +95,12 @@ stages{
             }
         }
         steps{
-            withCredentials([file(credentialsId: 'aws_terraform_tfvars', variable: 'aws_terraform_tfvars')]){
+            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', 
+                accessKeyVariable: 'AWS_ACCESS_KEY_ID', 
+                credentialsId: "${repo_bucket_credentials_id}", 
+                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]){
             sh '''
-            cd $APP_BASE_DIR/terraform
-            cp $aws_terraform_tfvars $APP_BASE_DIR/terraform/terraform.tfvars
-            /usr/local/bin/terraform destroy -force
+            aws cloudformation delete-stack --stack-name atk-test
             '''
             }
         }
@@ -109,7 +110,8 @@ stages{
 post {
     always {
         sh '''
-        rm -f $APP_BASE_DIR/terraform/terraform.tfvars | true
+        echo "perform some cleanup"
+        rm -f $APP_BASE_DIR/cf-params.json | true
         '''
     }
 }
