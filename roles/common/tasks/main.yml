@@ -46,18 +46,15 @@
 
 - name: allow ntp through firewall
   shell: firewall-cmd --add-service=ntp --permanent
-  when: inventory_hostname in groups['masters']
-
 
 - name: firewall reload
   shell: firewall-cmd --reload
-  when: inventory_hostname in groups['masters']
-
+  # when: inventory_hostname in groups['masters']
 
 - name: Make sure Chrony is started up
   service: name=chronyd state=started enabled=yes
   tags: chrony
-  when: inventory_hostname in groups['masters']
+  # when: inventory_hostname in groups['masters']
 
 - name: set timezone
   shell: timedatectl set-timezone Asia/Singapore

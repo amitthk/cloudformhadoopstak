@@ -5,7 +5,7 @@ restrict default nomodify notrap nopeer noquery
 restrict 127.0.0.1 
 restrict ::1
 
-server {{hostvars[groups['masters'][0]]['inventory_hostname']}} iburst
+server {{master_hostname}} iburst
 
 includefile /etc/ntp/crypto/pw
 
