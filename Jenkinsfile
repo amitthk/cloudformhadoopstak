@@ -56,7 +56,7 @@ stages{
                 credentialsId: "${repo_bucket_credentials_id}", 
                 secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]){
                     sh '''#!/bin/bash -xe
-cat > cf-params.json <<EOF
+cat <<EOF > cf-params.json
 [
     { "ParameterKey": "KeyName",
     "ParameterValue": "cdhstack_admin"
