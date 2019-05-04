@@ -1,6 +1,12 @@
 ---
 # tasks file for jupyter
 
+- name: Install pip3
+  shell: python --upgrade pip
+
+- name: Install jupyter using pip3
+  shell: pip3 install jupyter
+
 - name: setup the jupyter environment
   template:
     src: jupyter.sh.j2

@@ -35,6 +35,35 @@ Resources:
         Ref: KeyName
       ImageId:
         Ref: ImageId
+    Metadata:
+      AWS::CloudFormation::Init:
+        configSets:
+          bootstrapit:
+            - "install-packages"
+            - "install-ansible"
+        install-packages:
+          packages:
+            yum:
+              gcc-c++: []
+              autoconf: []
+              automake: []
+              python-pip: []
+              httpd: []
+        install-ansible:
+          commands:
+            0-install-pip:
+              command: sudo easy_install pip
+            1-sleep:
+              command: sleep 10s
+            2-install-ansible:
+              command: sudo pip install ansible
+            3-sleep:
+              command: sleep 10s
+            4-print-ansible-version:
+              command: ansible --version
+            5-pause-after-ansible:
+              command: sleep 10s
+
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
