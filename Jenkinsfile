@@ -17,7 +17,7 @@ parameters {
     string(name: 'INSTANCE_TYPE', defaultValue: 't2.large', description: 'Type of instance')
     string(name: 'STACK_NAME', defaultValue: 'atk-test', description: 'Unique name of stack')
     string(name: 'SPOT_PRICE', defaultValue: '0.037', description: 'Spot price')
-    string(name: 'AWS_DEFAULT_REGION ', defaultValue: 'ap-southeast-1', description: 'AWS default region')
+    string(name: 'AWS_DEFAULT_REGION', defaultValue: 'ap-southeast-1', description: 'AWS default region')
     string(name: 'PLAYBOOK_TAGS', defaultValue: 'all', description: 'playbook tags to run')
 }
 
