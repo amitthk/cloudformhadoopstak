@@ -89,6 +89,7 @@ ansible_become_method: sudo
 EOF
 
                     aws  ec2 describe-instances --filters Name=tag:Name,Values=${STACK_NAME} --query "Reservations[*].Instances[*].PublicIpAddress" --output=text >> hosts
+                    cat hosts
                     '''
                 }
             }
