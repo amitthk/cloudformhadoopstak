@@ -1,14 +1,11 @@
 ---
 - name: instal mariadb
   yum:
-    name: "{{item}}"
+    name: "{{mariadb_yum_packages}}"
     state: present
   become: yes
   become_user: "{{ansible_become_user}}"
   become_method: "{{ansible_become_method}}"
-  with_items:
-    - mariadb-server
-    - mariadb
 
 - name: enable the mariadb service
   service:
