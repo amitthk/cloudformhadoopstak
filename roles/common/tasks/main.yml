@@ -5,17 +5,11 @@
   yum:
     name: epel-release
     state: present
-  become: yes
-  become_user: "{{ansible_become_user}}"
-  become_method: "{{ansible_become_method}}"
 
 - name: ensure core packages are installed
   yum:
     name: "{{common_yum_packages}}"
     state: present
-  become: yes
-  become_user: "{{ansible_become_user}}"
-  become_method: "{{ansible_become_method}}"
 
 - name: copy java.sh
   template:
