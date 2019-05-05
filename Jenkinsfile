@@ -103,7 +103,7 @@ EOF
         }
         steps{
         sh '''
-        cd $APP_BASE_DIR/ansible
+        cd $APP_BASE_DIR
         ansible-playbook -i hosts --tags $PLAYBOOK_TAGS main.yml
         '''
         }
