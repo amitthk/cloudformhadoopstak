@@ -76,7 +76,19 @@ EOF
                     aws  cloudformation create-stack --stack-name=${STACK_NAME} --template-body file://cloudformation-stack.yml --parameters file://cf-params.json
                     aws  cloudformation wait stack-create-complete --stack-name=${STACK_NAME}
                     aws  cloudformation describe-stacks  --stack-name=${STACK_NAME}
-                    aws  ec2 describe-instances --filters Name=tag:Name,Values=${STACK_NAME} --query "Reservations[*].Instances[*].PublicIpAddress" --output=text
+
+cat << EOF > hosts
+[all:vars]
+ansible_ssh_user: centos
+ansible_ssh_private_key_file: ~/.ssh/cdhstack_admin.pem
+ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+ansible_become_user: root
+ansible_become_method: sudo
+
+[ec2]
+EOF
+
+                    aws  ec2 describe-instances --filters Name=tag:Name,Values=${STACK_NAME} --query "Reservations[*].Instances[*].PublicIpAddress" --output=text >> hosts
                     '''
                 }
             }
