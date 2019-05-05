@@ -14,9 +14,9 @@ parameters {
     password(name:'AWS_KEY', defaultValue: '', description:'Enter AWS_KEY')
     choice(name: 'DEPLOY_ENV', choices: ['dev','sit','uat','prod'], description: 'Select the deploy environment')
     choice(name: 'ACTION_TYPE', choices: ['deploy','create','destroy'], description: 'Create or destroy')
-    string(name: 'INSTANCE_TYPE', defaultValue: 't2.large', description: 'Type of instance')
+    string(name: 'INSTANCE_TYPE', defaultValue: 't2.micro', description: 'Type of instance')
     string(name: 'STACK_NAME', defaultValue: 'atk-test', description: 'Unique name of stack')
-    string(name: 'SPOT_PRICE', defaultValue: '0.037', description: 'Spot price')
+    string(name: 'SPOT_PRICE', defaultValue: '0.005', description: 'Spot price')
     string(name: 'AWS_DEFAULT_REGION', defaultValue: 'ap-southeast-1', description: 'AWS default region')
     string(name: 'PLAYBOOK_TAGS', defaultValue: 'all', description: 'playbook tags to run')
 }
