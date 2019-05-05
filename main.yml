@@ -3,7 +3,8 @@
   gather_facts: True
   hosts: all
   become: yes
-  become_method: sudo
+  become_method: "{{ansible_become_method}}"
+  become_user: "{{ansible_become_user}}"
   roles:
     - common
   tags:
