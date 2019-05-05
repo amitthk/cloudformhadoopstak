@@ -1,6 +1,6 @@
 ---
 - name: Prerequisites
-  gather_facts: True
+  gather_facts: False
   hosts: all
   become: yes
   become_method: "{{ansible_become_method}}"
