@@ -97,7 +97,7 @@ EOF
         steps{
         sh '''
         cd $APP_BASE_DIR
-        ansible-playbook -vvvv -i hosts --tags $PLAYBOOK_TAGS main.yml
+        ansible-playbook -vv -i hosts --tags $PLAYBOOK_TAGS main.yml
         '''
         }
     }
