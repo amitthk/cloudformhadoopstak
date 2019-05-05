@@ -77,7 +77,7 @@ EOF
                     aws  cloudformation wait stack-create-complete --stack-name=${STACK_NAME}
                     aws  cloudformation describe-stacks  --stack-name=${STACK_NAME}
 
-cat << EOF > hosts
+cat << EOF > ${APP_BASE_DIR}/hosts
 [ec2]
 EOF
 
