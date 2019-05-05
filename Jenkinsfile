@@ -73,10 +73,10 @@ cat <<EOF > cf-params.json
     }
 ]
 EOF
-                    aws --region=${AWS_DEFAULT_REGION} cloudformation create-stack --stack-name=${STACK_NAME} --template-body file://cloudformation-stack.yml --parameters file://cf-params.json
-                    aws --region=${AWS_DEFAULT_REGION} cloudformation wait stack-create-complete --stack-name=${STACK_NAME}
-                    aws --region=${AWS_DEFAULT_REGION} cloudformation describe-stacks  --stack-name=${STACK_NAME}
-                    aws --region=${AWS_DEFAULT_REGION} ec2 describe-instances --filters Name=tag:Name,Values=${STACK_NAME} --query "Reservations[*].Instances[*].PublicIpAddress" --output=text
+                    aws  cloudformation create-stack --stack-name=${STACK_NAME} --template-body file://cloudformation-stack.yml --parameters file://cf-params.json
+                    aws  cloudformation wait stack-create-complete --stack-name=${STACK_NAME}
+                    aws  cloudformation describe-stacks  --stack-name=${STACK_NAME}
+                    aws  ec2 describe-instances --filters Name=tag:Name,Values=${STACK_NAME} --query "Reservations[*].Instances[*].PublicIpAddress" --output=text
                     '''
                 }
             }
@@ -107,8 +107,8 @@ EOF
                 credentialsId: "${repo_bucket_credentials_id}", 
                 secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]){
             sh '''
-            aws --region=${AWS_DEFAULT_REGION} cloudformation delete-stack --stack-name atk-test
-            aws --region=${AWS_DEFAULT_REGION} cloudformation wait stack-delete-complete --stack-name=${STACK_NAME}
+            aws  cloudformation delete-stack --stack-name atk-test
+            aws  cloudformation wait stack-delete-complete --stack-name=${STACK_NAME}
             '''
             }
         }
