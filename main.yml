@@ -1,6 +1,6 @@
 ---
 - name: Prerequisites
-  gather_facts: False
+  gather_facts: yes
   hosts: all
   become: yes
   remote_user: "{{ansible_ssh_user}}"
