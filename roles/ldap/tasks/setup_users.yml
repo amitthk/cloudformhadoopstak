@@ -1,0 +1,48 @@
+---
+- name: add the ldiff
+  template:
+    src: orgRole.ldif.j2
+    dest: /tmp/tmp.ldif
+
+- name: Add an Organizational role to your ldap
+  shell: "ldapadd -a -x -D 'cn=admin,dc=amitthk,dc=mywire,dc=org' -w {{ldap_server_rootpw}} -f /tmp/tmp.ldif"
+
+- name: add the admin ldiff
+  template:
+    src: admin.ldif.j2
+    dest: /tmp/tmp.ldif
+
+- name: Add the admin user
+  shell: "ldapadd -a -x -D 'cn=admin,dc=amitthk,dc=mywire,dc=org' -w {{ldap_server_rootpw}} -f /tmp/tmp.ldif"
+
+- name: add some OUs to your ldap
+  template:
+    src: ous.ldif.j2
+    dest: /tmp/tmp.ldif
+
+- name: add some OUs to your ldap
+  shell: "ldapadd -a -x -D 'cn=admin,dc=amitthk,dc=mywire,dc=org' -w {{ldap_server_rootpw}} -f /tmp/tmp.ldif"
+
+- name: add another user ldiff
+  template:
+    src: user.ldif.j2
+    dest: /tmp/tmp.ldif
+
+- name: add another user
+  shell: "ldapadd -a -x -D 'cn=admin,dc=amitthk,dc=mywire,dc=org' -w {{ldap_server_rootpw}} -f /tmp/tmp.ldif"
+
+- name: add a group ldiff
+  template:
+    src: group.hadoop.ldif.j2
+    dest: /tmp/tmp.ldif
+
+- name: add a group to your ldap
+  shell: "ldapadd -a -x -D 'cn=admin,dc=amitthk,dc=mywire,dc=org' -w {{ldap_server_rootpw}} -f /tmp/tmp.ldif"
+
+- name: add a user to group ldiff
+  template:
+    src: user_to_group.ldif.j2
+    dest: /tmp/tmp.ldif
+
+- name: add a user to group
+  shell: "ldapadd -a -x -D 'cn=admin,dc=amitthk,dc=mywire,dc=org' -w {{ldap_server_rootpw}} -f /tmp/tmp.ldif"
