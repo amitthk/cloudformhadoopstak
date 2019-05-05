@@ -1,6 +1,6 @@
 ---
 - name: Prerequisites
-  gather_facts: False
+  gather_facts: True
   hosts: all
   become: yes
   become_method: sudo
