@@ -107,7 +107,8 @@ EOF
                 credentialsId: "${repo_bucket_credentials_id}", 
                 secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]){
             sh '''
-            aws --region=ap-southeast-1 cloudformation delete-stack --stack-name atk-test
+            aws --region=${AWS_DEFAULT_REGION} cloudformation delete-stack --stack-name atk-test
+            aws --region=${AWS_DEFAULT_REGION} cloudformation wait stack-delete-complete --stack-name=${STACK_NAME}
             '''
             }
         }
