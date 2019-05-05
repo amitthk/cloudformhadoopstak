@@ -1,0 +1,40 @@
+---
+- name: "Create a new database with name {{cloudera_scm_db}}"
+  mysql_db:
+    name: "{{cloudera_scm_db}}"
+    host: localhost
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
+    state: present
+
+- name: "create the {{mariadb_scm_user}} user"
+  mysql_user:
+    name: "{{mariadb_scm_user}}"
+    password: "{{mariadb_scm_password}}"
+    priv: "{{cloudera_scm_db}}.*:ALL,GRANT"
+    host: localhost
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
+    state: present
+
+- name: "Create a new database with name {{item}}"
+  mysql_db:
+    name: "{{item}}"
+    host: localhost
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
+    state: present
+  with_items:
+    - "{{cdh_scm_databases}}"
+
+- name: "create the {{item}} user"
+  mysql_user:
+    name: "{{item}}"
+    password: "{{mariadb_scm_password}}"
+    priv: "{{item}}.*:ALL,GRANT"
+    host: localhost
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
+    state: present
+  with_items:
+    - "{{cdh_scm_databases}}"

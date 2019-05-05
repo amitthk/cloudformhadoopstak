@@ -1,0 +1,20 @@
+<VirtualHost *:8080>
+DocumentRoot /usr/share/phpldapadmin/htdocs
+ServerName localhost
+
+Alias /phpldapadmin /usr/share/phpldapadmin/htdocs
+Alias /ldapadmin /usr/share/phpldapadmin/htdocs
+
+<Directory /usr/share/phpldapadmin/htdocs>
+  <IfModule mod_authz_core.c>
+    # Apache 2.4
+    # Require local
+    Require all granted
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    # Apache 2.2
+    Order Allow,Deny
+    Allow from all
+  </IfModule>
+</Directory>
+</VirtualHost>

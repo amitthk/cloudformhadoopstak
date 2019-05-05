@@ -23,11 +23,17 @@
 - name: disable selinux
   shell: sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/sysconfig/selinux
 
+  - name: Check if Iptables Service Exists
+    stat: path=/usr/lib/systemd/system/iptables.service
+    register: iptables_status
+
 - name: disabe iptables
   service: name=iptables state=stopped
+  when: iptables_status.stat.exists
 
 - name: disbale  iptables on boot
   service: name=iptables enabled=no
+  when: iptables_status.stat.exists
 
 - name: create a service for next reboot to disable transparent hugepage
   template:

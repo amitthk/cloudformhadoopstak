@@ -1,0 +1,32 @@
+---
+# tasks file for kerberos
+- name: install ntp
+  yum:
+    name: ntp
+    state: present
+  become: yes
+  become_user: "{{ansible_become_user}}"
+  become_method: "{{ansible_become_method}}"
+
+- name: Install the kerberos and required Packages
+  yum:
+    name: "{{ kerberos_server_pkgs }}"
+    state: installed
+  become: yes
+  become_user: "{{ansible_become_user}}"
+  become_method: "{{ansible_become_method}}"
+
+- name: Copy the krb5.conf
+  template:
+    src: krb5.conf.j2
+    dest: /etc/krb5.conf
+
+- name: Copy the kdc.conf
+  template:
+    src: kdc.conf.j2
+    dest: /var/kerberos/krb5kdc/kdc.conf
+
+- name: Copy the kadm5.acl
+  template:
+    src: kadm5.acl.j2
+    dest: /var/kerberos/krb5kdc/kadm5.acl

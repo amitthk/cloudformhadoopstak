@@ -7,3 +7,35 @@
     - common
   tags:
     - common
+
+- name: db
+  hosts: db
+  become: yes
+  roles:
+    - db
+  tags:
+    - db
+
+- name: ldap
+  hosts: ldap
+  become: yes
+  roles:
+    - ldap
+  tags:
+    - ldap
+
+- name: phpldapadmin
+  hosts: ldap
+  become: yes
+  roles:
+    - phpldapadmin
+  tags:
+    - phpldapadmin
+
+- name: kerberos
+  hosts: kerberos
+  become: yes
+  roles:
+    - kerberos
+  tags:
+    - kerberos

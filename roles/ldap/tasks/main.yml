@@ -1,0 +1,59 @@
+---
+# tasks file for ldap
+- name: Install the openldap and required Packages
+  yum:
+    name: "{{ ldap_server_pkgs }}"
+    state: installed
+
+- name: Delete the configuration directory
+  file: 
+    path: "{{ ldap_server_app_path }}/slapd.d"
+    state: absent
+
+- name: Generate the root password for ldap
+  shell: slappasswd -s {{ ldap_server_rootpw }} 
+  register: root_password
+
+- name: "Ensure group {{ ldap_server_user }} exists"
+  group:
+    name: "{{ ldap_server_user }}"
+    state: present
+
+- name: "Add the user {{ ldap_server_user }}"
+  user:
+    name: "{{ ldap_server_user }}"
+    shell: /bin/bash
+    groups: "{{ ldap_server_user }}"
+    state: present
+
+#Todo: setting the permission to 777 for now to make slapd work. must run as proper user
+- name: ensure the ldap database directory exists.
+  file:
+    path: "/var/lib/ldap/{{ ldap_server_domain_name }}/"
+    state: directory
+    mode: 0777
+    recurse: yes
+    owner: "{{ ldap_server_user }}"
+    group: "{{ ldap_server_user }}"
+
+- name: generate the root passwd hash
+  command: slappasswd -h {{ ldap_password_hash_type }} -s {{ ldap_server_rootpw }}
+  register: ldap_rootpw_hash
+
+- name: Copy the slapd.conf configuration file for Redhat
+  template:
+    src: slapd.conf.j2
+    dest: "{{ ldap_server_app_path }}/slapd.conf"
+  notify: 
+   - restart slapd
+
+- name: Copy the ldap.conf configuration file
+  template:
+    src: ldap.conf.j2
+    dest: "{{ ldap_server_app_path }}/ldap.conf"
+
+- name: Open up FirewallD for ldap 
+  command: "{{ item }}"
+  with_items:
+  - firewall-cmd --zone=dmz --add-port=389/tcp --permanent
+  - firewall-cmd --reload

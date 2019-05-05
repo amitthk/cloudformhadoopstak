@@ -1,0 +1,7 @@
+---
+# vars file for kerberos
+krb_default_realm: pys3viewer.mywire.org
+kerberos_server_pkgs:
+  - krb5-server
+  - krb5-libs
+  - krb5-workstation

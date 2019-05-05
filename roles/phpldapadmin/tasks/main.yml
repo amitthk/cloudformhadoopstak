@@ -1,0 +1,56 @@
+---
+- name: install the packages
+  yum:
+    name: "{{php_ldap_admin_pkgs}}"
+    state: present
+
+- name: Process httpd.conf
+  template:
+    src: httpd.conf.j2
+    dest: /etc/httpd/conf/httpd.conf
+
+# - name: Process php.conf
+#   template:
+#     src: php.conf.j2
+#     dest: /etc/httpd/conf.d/php.conf
+
+- name: Process phpldapadmin.conf
+  template:
+    src: phpldapadmin.conf.j2
+    dest: /etc/httpd/conf.d/phpldapadmin.conf
+
+# - name: Process config.php
+#   template:
+#     src: config.php.j2
+#     dest: /etc/phpldapadmin/config.php
+
+- name: backup config.php
+  shell: "cp /etc/phpldapadmin/config.php /etc/phpldapadmin/config.php.bak"
+
+- name: move all the httpd default confs
+  shell: "for f in /etc/httpd/conf.d/*.conf; do mv $f $f.bak ;done"
+- name: revert back the php.conf and phpldapadmin.conf
+  shell: "mv /etc/httpd/conf.d/{{item}}.bak /etc/httpd/conf.d/{{item}}"
+  with_items:
+    - 'php.conf'
+    - 'phpldapadmin.conf'
+
+# - name: process config.php
+#   lineinfile:
+#     path: /etc/phpldapadmin/config.php
+#     regexp: "{{item.o}}"
+#     line: "{{item.n}}"
+#   with_items:
+#     - { o: "\$servers->setValue\(\'server\',\'host\',\'127.0.0.1\'\);", n: "$servers->setValue('server','host','{{ hostvars[groups['ldap'][0]]['inventory_hostname'] }}');"}
+
+- name: Open up FirewallD for httpd 
+  command: "{{ item }}"
+  with_items:
+  - firewall-cmd --permanent --zone=public --add-service=http
+  - firewall-cmd --zone=public --permanent --add-service=https
+  - firewall-cmd --zone=public --add-port=8080/tcp --permanent
+  - firewall-cmd --permanent --zone=dmz --add-service=http
+  - firewall-cmd --zone=dmz --permanent --add-service=https
+  - firewall-cmd --zone=dmz --add-port=8080/tcp --permanent
+  - firewall-cmd --reload
+#   - setsebool -P httpd_can_connect_ldap on

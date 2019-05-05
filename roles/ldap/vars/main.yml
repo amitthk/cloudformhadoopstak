@@ -1,0 +1,12 @@
+---
+# vars file for ldap
+env:
+ RUNLEVEL: 1
+ldap_server_pkgs:
+  - openldap-servers
+  - openldap-clients
+  - libselinux-python
+  - openssl
+
+ldap_server_app_path: "/etc/openldap/"
+ldap_server_user: ldapadmin
