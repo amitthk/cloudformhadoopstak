@@ -17,6 +17,7 @@ parameters {
     string(name: 'INSTANCE_TYPE', defaultValue: 't2.large', description: 'Type of instance')
     string(name: 'STACK_NAME', defaultValue: 'atk-test', description: 'Unique name of stack')
     string(name: 'SPOT_PRICE', defaultValue: '0.037', description: 'Spot price')
+    string(name: 'AWS_DEFAULT_REGION ', defaultValue: 'ap-southeast-1', description: 'AWS default region')
     string(name: 'PLAYBOOK_TAGS', defaultValue: 'all', description: 'playbook tags to run')
 }
 
@@ -31,6 +32,7 @@ stages{
         env.SPOT_PRICE = "$params.SPOT_PRICE"
         env.PLAYBOOK_TAGS = "$params.PLAYBOOK_TAGS"
         env.STACK_NAME = "$params.STACK_NAME"
+        env.AWS_DEFAULT_REGION = "$params.AWS_DEFAULT_REGION"
         env.APP_ID = getEnvVar("${env.DEPLOY_ENV}",'APP_ID')
         env.repo_bucket_credentials_id = "ec2s3admin";
         env.AMI_ID = "ami-8e0205f2";
@@ -71,10 +73,10 @@ cat <<EOF > cf-params.json
     }
 ]
 EOF
-                    aws --region=ap-southeast-1 cloudformation create-stack --stack-name=${STACK_NAME} --template-body file://cloudformation-stack.yml --parameters file://cf-params.json
-                    aws cloudformation wait stack-create-complete --stack-name=${STACK_NAME}
-                    aws cloudformation describe-stacks  --stack-name=${STACK_NAME}
-                    aws ec2 describe-instances --filters Name=tag:Name,Values=${STACK_NAME} --query "Reservations[*].Instances[*].PublicIpAddress" --output=text
+                    aws --region=${AWS_DEFAULT_REGION} cloudformation create-stack --stack-name=${STACK_NAME} --template-body file://cloudformation-stack.yml --parameters file://cf-params.json
+                    aws --region=${AWS_DEFAULT_REGION} cloudformation wait stack-create-complete --stack-name=${STACK_NAME}
+                    aws --region=${AWS_DEFAULT_REGION} cloudformation describe-stacks  --stack-name=${STACK_NAME}
+                    aws --region=${AWS_DEFAULT_REGION} ec2 describe-instances --filters Name=tag:Name,Values=${STACK_NAME} --query "Reservations[*].Instances[*].PublicIpAddress" --output=text
                     '''
                 }
             }
