@@ -78,13 +78,6 @@ EOF
                     aws  cloudformation describe-stacks  --stack-name=${STACK_NAME}
 
 cat << EOF > hosts
-[all:vars]
-ansible_ssh_user: centos
-ansible_ssh_private_key_file: ~/.ssh/cdhstack_admin.pem
-ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
-ansible_become_user: root
-ansible_become_method: sudo
-
 [ec2]
 EOF
 
