@@ -2,7 +2,7 @@
 - name: "Create a new database with name {{cloudera_scm_db}}"
   mysql_db:
     name: "{{cloudera_scm_db}}"
-    host: localhost
+    login_host: localhost
     login_user: root
     login_password: "{{ mariadb_root_password }}"
     state: present
@@ -12,7 +12,7 @@
     name: "{{mariadb_scm_user}}"
     password: "{{mariadb_scm_password}}"
     priv: "{{cloudera_scm_db}}.*:ALL,GRANT"
-    host: localhost
+    login_host: localhost
     login_user: root
     login_password: "{{ mariadb_root_password }}"
     state: present
@@ -20,7 +20,7 @@
 - name: "Create a new database with name {{item}}"
   mysql_db:
     name: "{{item}}"
-    host: localhost
+    login_host: localhost
     login_user: root
     login_password: "{{ mariadb_root_password }}"
     state: present
@@ -32,7 +32,7 @@
     name: "{{item}}"
     password: "{{mariadb_scm_password}}"
     priv: "{{item}}.*:ALL,GRANT"
-    host: localhost
+    login_host: localhost
     login_user: root
     login_password: "{{ mariadb_root_password }}"
     state: present
