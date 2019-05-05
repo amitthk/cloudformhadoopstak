@@ -15,6 +15,7 @@ parameters {
     choice(name: 'DEPLOY_ENV', choices: ['dev','sit','uat','prod'], description: 'Select the deploy environment')
     choice(name: 'ACTION_TYPE', choices: ['deploy','create','destroy'], description: 'Create or destroy')
     string(name: 'INSTANCE_TYPE', defaultValue: 't2.large', description: 'Type of instance')
+    string(name: 'STACK_NAME', defaultValue: 'atk-test', description: 'Unique name of stack')
     string(name: 'SPOT_PRICE', defaultValue: '0.037', description: 'Spot price')
     string(name: 'PLAYBOOK_TAGS', defaultValue: 'all', description: 'playbook tags to run')
 }
@@ -29,6 +30,7 @@ stages{
         env.INSTANCE_TYPE = "$params.INSTANCE_TYPE"
         env.SPOT_PRICE = "$params.SPOT_PRICE"
         env.PLAYBOOK_TAGS = "$params.PLAYBOOK_TAGS"
+        env.STACK_NAME = "$params.STACK_NAME"
         env.APP_ID = getEnvVar("${env.DEPLOY_ENV}",'APP_ID')
         env.repo_bucket_credentials_id = "ec2s3admin";
         env.AMI_ID = "ami-8e0205f2";
@@ -69,7 +71,10 @@ cat <<EOF > cf-params.json
     }
 ]
 EOF
-                    aws --region=ap-southeast-1 cloudformation create-stack --stack-name atk-test --template-body file://cloudformation-stack.yml --parameters file://cf-params.json
+                    aws --region=ap-southeast-1 cloudformation create-stack --stack-name=${STACK_NAME} --template-body file://cloudformation-stack.yml --parameters file://cf-params.json
+                    aws cloudformation wait stack-create-complete --stack-name=${STACK_NAME}
+                    aws cloudformation describe-stacks  --stack-name=${STACK_NAME}
+                    aws ec2 describe-instances --filters Name=tag:Name,Values=${STACK_NAME} --query "Reservations[*].Instances[*].PublicIpAddress" --output=text
                     '''
                 }
             }

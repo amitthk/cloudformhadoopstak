@@ -23,6 +23,26 @@
     dest: '/etc/profile.d/java.sh'
     mode: '644'
 
+- name: disable selinux
+  shell: sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/selinux/config
+
+- name: disable selinux
+  shell: sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/sysconfig/selinux
+
+- name: disabe iptables
+  service: name=iptables state=stopped
+
+- name: disbale  iptables on boot
+  service: name=iptables enabled=no
+
+- name: create a service for next reboot to disable transparent hugepage
+  template:
+    src: disable-thp.service.j2
+    dest: /etc/systemd/system/disable-thp.service
+
+- name: enable the disable-thp service
+  service: name=disable-thp enabled=yes
+
 - name: Disable transparent huge page - defrag
   shell: echo "never" > /sys/kernel/mm/transparent_hugepage/defrag
  
