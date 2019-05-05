@@ -110,6 +110,7 @@
 - name: Open up FirewallD ports for all the services (This will need to be cut down to what's required)
   command: "firewall-cmd --zone=dmz --add-port={{item}}/tcp --permanent"
   with_items:
+    - 22
     - "{{cloudera_ports}}"
     - "{{cdh_services_ports}}"
     - "{{cdh_third_party_ports}}"
