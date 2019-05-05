@@ -52,6 +52,15 @@
     src: ldap.conf.j2
     dest: "{{ ldap_server_app_path }}/ldap.conf"
 
+- name: enable the slapd service
+  service:
+    name: slapd
+    enabled: yes
+- name: start the slapd service
+  service:
+    name: slapd
+    state: started
+
 - name: Open up FirewallD for ldap 
   command: "{{ item }}"
   with_items:
