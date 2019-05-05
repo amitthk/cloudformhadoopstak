@@ -30,3 +30,21 @@
   template:
     src: kadm5.acl.j2
     dest: /var/kerberos/krb5kdc/kadm5.acl
+
+- name: create the kdc database
+  shell: "kdb5_util create -r {{krb_default_realm|upper}} -s"
+
+- name: enable the "{{item}}" service
+  service:
+    name: "{{item}}"
+    enabled: yes
+  with_items:
+    - krb5kdc.service
+    - kadmin.service
+- name: start the "{{item}}" service
+  service:
+    name: "{{item}}"
+    state: started
+  with_items:
+    - krb5kdc.service
+    - kadmin.service
