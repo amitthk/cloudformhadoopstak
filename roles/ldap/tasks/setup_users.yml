@@ -5,7 +5,7 @@
     dest: /tmp/1.ldif
 
 - name: Add an Organizational role to your ldap
-  shell: "ldapadd -a -x -D 'cn=admin,dc=amitthk,dc=mywire,dc=org' -w {{ldap_server_rootpw}} -f /tmp/1.ldif"
+  shell: "ldapadd -a -x -D 'cn=admin,{{ldap_root_dn_suffix}}' -w {{ldap_server_rootpw}} -f /tmp/1.ldif"
   ignore_errors: yes
 
 - name: add the admin ldiff
@@ -14,7 +14,7 @@
     dest: /tmp/2.ldif
 
 - name: Add the admin user
-  shell: "ldapadd -a -x -D 'cn=admin,dc=amitthk,dc=mywire,dc=org' -w {{ldap_server_rootpw}} -f /tmp/2.ldif"
+  shell: "ldapadd -a -x -D 'cn=admin,{{ldap_root_dn_suffix}}' -w {{ldap_server_rootpw}} -f /tmp/2.ldif"
   ignore_errors: yes
 
 - name: add some OUs to your ldap
@@ -23,7 +23,7 @@
     dest: /tmp/3.ldif
 
 - name: add some OUs to your ldap
-  shell: "ldapadd -a -x -D 'cn=admin,dc=amitthk,dc=mywire,dc=org' -w {{ldap_server_rootpw}} -f /tmp/3.ldif"
+  shell: "ldapadd -a -x -D 'cn=admin,{{ldap_root_dn_suffix}}' -w {{ldap_server_rootpw}} -f /tmp/3.ldif"
   ignore_errors: yes
 
 - name: add another user ldiff
@@ -32,7 +32,7 @@
     dest: /tmp/4.ldif
 
 - name: add another user
-  shell: "ldapadd -a -x -D 'cn=admin,dc=amitthk,dc=mywire,dc=org' -w {{ldap_server_rootpw}} -f /tmp/4.ldif"
+  shell: "ldapadd -a -x -D 'cn=admin,{{ldap_root_dn_suffix}}' -w {{ldap_server_rootpw}} -f /tmp/4.ldif"
   ignore_errors: yes
 
 - name: add a group ldiff
@@ -41,7 +41,7 @@
     dest: /tmp/5.ldif
 
 - name: add a group to your ldap
-  shell: "ldapadd -a -x -D 'cn=admin,dc=amitthk,dc=mywire,dc=org' -w {{ldap_server_rootpw}} -f /tmp/5.ldif"
+  shell: "ldapadd -a -x -D 'cn=admin,{{ldap_root_dn_suffix}}' -w {{ldap_server_rootpw}} -f /tmp/5.ldif"
   ignore_errors: yes
 
 - name: add a user to group ldiff
@@ -50,5 +50,5 @@
     dest: /tmp/6.ldif
 
 - name: add a user to group
-  shell: "ldapadd -a -x -D 'cn=admin,dc=amitthk,dc=mywire,dc=org' -w {{ldap_server_rootpw}} -f /tmp/6.ldif"
+  shell: "ldapadd -a -x -D 'cn=admin,{{ldap_root_dn_suffix}}' -w {{ldap_server_rootpw}} -f /tmp/6.ldif"
   ignore_errors: yes
