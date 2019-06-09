@@ -1,0 +1,14 @@
+---
+- name: install sssd packages
+  yum:
+    name: "{{sssd_packages}}"
+    state: present
+
+- name: copy the configs
+  template:
+    src: "{{item.src}}"
+    dest: "{{item.dest}}"
+  with_items:
+    - {src: krb5.conf.j2, dest: /etc/krb5.conf }
+    - {src: sssd.conf.j2, dest: /etc/sssd/sssd.conf }
+

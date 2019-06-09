@@ -1,0 +1,36 @@
+[sssd]
+config_file_version = 2
+services = nss, pam
+domains = LDAP
+
+[nss]
+
+[pam]
+
+[domain/{{krb_default_realm}}]
+id_provider = ldap
+auth_provider = ldap
+ldap_schema = rfc2307
+ldap_uri = ldap://{{krb_default_realm}}
+ldap_default_bind_dn = uid=auth,ou=Users,dc=domain,dc=tld
+ldap_default_authtok = something_very_secret
+ldap_default_authtok_type = password
+ldap_search_base = dc=domain,dc=tld
+ldap_user_search_base = ou=Users,dc=domain,dc=tld
+ldap_group_search_base = ou=Groups,dc=domain,dc=tld
+ldap_user_object_class = inetOrgPerson
+ldap_user_gecos = cn
+#ldap_tls_reqcert = hard
+#ldap_tls_cacert = /etc/pki/tls/certs/ca.crt
+#ldap_id_use_start_tls = true
+#ldap_user_shell = desktopLoginShell
+override_shell = /bin/bash
+cache_credentials = true
+enumerate = true
+# It is possible to filter the logins via a LDAP-filer
+# by commenting the both lines below.
+# In this exemple, only the users member of the group netusers
+# will be valid on this host.
+# posixMemberOF is a parameter only for a iPasserelle
+#access_provider = ldap
+#ldap_access_filter = (|(posixMemberOf=admins)(uid=backup))

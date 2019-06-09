@@ -1,0 +1,11 @@
+---
+sssd_packages:
+  - krb5-workstation
+  - krb5-libs
+  - sssd
+  - sssd-client
+  - openldap-clients
+  - realmd
+  - adcli
+
+krb_default_realm: amitthk.mywire.org
