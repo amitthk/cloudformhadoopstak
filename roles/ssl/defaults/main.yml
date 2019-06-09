@@ -1,0 +1,16 @@
+---
+openjdk_version: 1.8.0
+ca_cert_packages:
+  - mod_ssl
+  - openssl
+  - ca-certificates
+server_domain: jvcdp.mywire.org
+cert_alias: "{{server_domain | replace('.','_')}}"
+openjdk_home: "/usr/java/jdk1.8.0_181-amd64"
+ssl_dir_path: "/home/{{ansible_ssh_user}}/tmp/ssl"
+ssl_crtpath: "{{ ssl_dir_path }}/{{ server_domain }}.crt"
+ssl_pempath: "{{ ssl_dir_path }}/{{ server_domain }}.pem"
+ssl_csrpath: "{{ ssl_dir_path }}/{{ server_domain }}.csr"
+ssl_pfxpath: "{{ ssl_dir_path }}/{{ server_domain }}.pfx"
+ssl_private_key_password: "changeit"
+java_keystore_pass: changeit

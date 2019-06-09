@@ -33,16 +33,13 @@ stages{
         env.PLAYBOOK_TAGS = "$params.PLAYBOOK_TAGS"
         env.STACK_NAME = "$params.STACK_NAME"
         env.AWS_DEFAULT_REGION = "$params.AWS_DEFAULT_REGION"
-        env.APP_ID = getEnvVar("${env.DEPLOY_ENV}",'APP_ID')
-        env.repo_bucket_credentials_id = "ec2s3admin";
-        env.AMI_ID = "ami-8e0205f2";
-        env.aws_s3_bucket_name = 'jvcdp-repo';
-        env.aws_s3_bucket_region = 'ap-southeast-1';
+
         env.APP_BASE_DIR = pwd()
         env.GIT_HASH = sh (script: "git rev-parse --short HEAD", returnStdout: true)
         env.TIMESTAMP = sh (script: "date +'%Y%m%d%H%M%S%N' | sed 's/[0-9][0-9][0-9][0-9][0-9][0-9]\$//g'", returnStdout: true)
+
+        load "${APP_BASE_DIR}/env_vars/${params.DEPLOY_ENV}.groovy"
         }
-        echo "do some init here";
 
         }
     }

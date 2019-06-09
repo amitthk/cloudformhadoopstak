@@ -7,11 +7,11 @@ ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
 ansible_become_user: root
 ansible_become_method: sudo
 ansible_python_interpreter: /usr/bin/python2.7
-hadoop_mirror_url: http://atksv.mywire.org
+hadoop_mirror_url: http://jvcdp.mywire.org
 hadoop_version: 2.7.7
-hive_mirror_url: http://atksv.mywire.org
+hive_mirror_url: http://jvcdp.mywire.org
 hive_version: 2.3.4
-spark_mirror_url: http://atksv.mywire.org
+spark_mirror_url: http://jvcdp.mywire.org
 spark_version : '2.4.0'
 spark_hadoop_version : hadoop2.7
 zookeeper_mirror_url: http://archive.apache.org/dist/zookeeper
@@ -20,5 +20,5 @@ install_base_dir: /usr/local
 data_dir: /data/hadoop
 openjdk_version: 1.8.0
 start_hdfs_services: 'no'
-alluxio_mirror_url: http://atksv.mywire.org/alluxio
+alluxio_mirror_url: http://jvcdp.mywire.org/alluxio
 alluxio_version: '1.8.1'

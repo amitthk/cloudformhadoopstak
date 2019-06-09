@@ -1,0 +1,72 @@
+---
+- name: install ca-certificates
+  yum:
+    name: "{{ca_cert_packages}}"
+    state: present
+
+- file:
+    path: "{{ ssl_dir_path }}"
+    state: absent
+- file:
+    path: "{{ ssl_dir_path }}"
+    state: directory
+    
+- name: "Generate the private key file to sign the CSR"
+  openssl_privatekey:
+    path: "{{ ssl_pempath }}"
+    passphrase: "{{ ssl_private_key_password }}"
+    cipher: aes256
+
+- name: "Generate the CSR file signed with the private key"
+  openssl_csr:
+    path: "{{ ssl_csrpath }}"
+    privatekey_path: "{{ ssl_pempath }}"
+    privatekey_passphrase: "{{ ssl_private_key_password }}"
+    common_name: "{{ server_domain }}"
+
+- name: "Sign the CSR file as a CA to turn it into a certificate"
+  openssl_certificate:
+    path: "{{ ssl_crtpath }}"
+    privatekey_path: "{{ ssl_pempath }}"
+    privatekey_passphrase: "{{ ssl_private_key_password }}"
+    csr_path: "{{ ssl_csrpath }}"
+    provider: selfsigned
+
+- name: "Convert the signed certificate into a PKCS12 file with the attached private key"
+  openssl_pkcs12:
+    action: export
+    path: "{{ ssl_pfxpath }}"
+    name: "{{ server_domain }}"
+    privatekey_path: "{{ ssl_pempath }}"
+    privatekey_passphrase: "{{ ssl_private_key_password }}"
+    passphrase: password
+    certificate_path: "{{ ssl_crtpath }}"
+    state: present
+
+- name: add our certificate to ca-trust
+  copy:
+    src: "{{ ssl_crtpath }}"
+    dest: /etc/pki/ca-trust/source/anchors/{{cert_alias}}.crt
+    owner: root
+    group: root
+    mode: 0644
+
+- name: update ca-trust
+  command: update-ca-trust
+
+- name: show the openjdk home
+  shell: "echo $(dirname $(dirname $(readlink $(readlink $(which javac)))))"
+  register: openjdk_cmd_output
+
+- name: gethe openjdk home
+  set_fact:
+    openjdk_home: "{{ openjdk_cmd_output.stdout }}"
+
+#https://docs.ansible.com/ansible/latest/modules/java_cert_module.html
+- name: import our ca cert to jdk keystore
+  java_cert:
+    cert_alias: "{{cert_alias}}"
+    cert_path: "{{cert_alias}}.crt"
+    keystore_path: "{{openjdk_home}}/jre/lib/security/cacerts"
+    keystore_pass: "{{java_keystore_pass}}"
+    state: present
