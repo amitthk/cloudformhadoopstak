@@ -1,0 +1,12 @@
+---
+service_accounts:
+  - hdfs
+  - spark
+  - hadoop
+  - spark
+  - zookeeper
+  - kafka
+  - jupyter
+  - dbadmin
+  - ldapadmin
+  - kerberos
