@@ -7,13 +7,13 @@
   tags:
     - common
 
-- name: core-settings
+- name: harden
   gather_facts: no
   hosts: all
   roles:
-    - { name: core-settings, become: yes, become_user: root, become_method: sudo }
+    - { name: harden, become: yes, become_user: root, become_method: sudo }
   tags:
-    - common
+    - harden
 
 - name: db
   hosts: all

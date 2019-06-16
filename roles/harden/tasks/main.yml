@@ -36,3 +36,13 @@
     ssh_key_file: .ssh/id_rsa
   with_items:
     - "{{service_accounts}}"
+
+- name: set passwords for users
+  include_tasks: set-random-passwd.yml
+  with_items:
+    - "{{service_accounts}}"
+
+- name: set random password for root as well
+  include_tasks: set-random-passwd.yml
+  with_items:
+    - root
