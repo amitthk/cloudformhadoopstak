@@ -92,10 +92,12 @@ EOF
             }
         }
         steps{
-        sh '''
+                withCredentials([sshUserPrivateKey(credentialsId: "cdhstack_admin.pem", keyFileVariable: 'cdhstack_key')]) {
+        sh '''#!/bin/bash -xe
         cd $APP_BASE_DIR
-        ansible-playbook -vv -i hosts --tags $PLAYBOOK_TAGS main.yml
+        ansible-playbook -vv -i hosts --tags $PLAYBOOK_TAGS --private-key ${cdhstack_key} main.yml
         '''
+                }
         }
     }
     stage('Destroy Stack'){
