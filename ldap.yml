@@ -1,0 +1,8 @@
+---
+- name: ldap
+  hosts: all
+  become: yes
+  roles:
+    - { name: ldap, become: yes, become_user: ldapadmin, become_method: sudo }
+  tags:
+    - ldap

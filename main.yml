@@ -14,19 +14,3 @@
     - { name: db, become: yes, become_user: dbadmin, become_method: sudo }
   tags:
     - db
-
-- name: ldap
-  hosts: all
-  become: yes
-  roles:
-    - { name: ldap, become: yes, become_user: ldapadmin, become_method: sudo }
-  tags:
-    - ldap
-
-- name: kerberos
-  hosts: all
-  become: yes
-  roles:
-    - { name: kerberos, become: yes, become_user: kerberos, become_method: sudo }
-  tags:
-    - kerberos
