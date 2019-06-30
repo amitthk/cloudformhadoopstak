@@ -1,0 +1,7 @@
+- name: phpldapadmin
+  hosts: all
+  become: yes
+  roles:
+    - { name: phpldapadmin, become: yes, become_user: ldapadmin, become_method: sudo }
+  tags:
+    - phpldapadmin

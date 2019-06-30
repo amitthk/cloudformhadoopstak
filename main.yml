@@ -7,14 +7,6 @@
   tags:
     - common
 
-- name: harden
-  gather_facts: no
-  hosts: all
-  roles:
-    - { name: harden, become: yes, become_user: root, become_method: sudo }
-  tags:
-    - harden
-
 - name: db
   hosts: all
   become: yes
@@ -30,14 +22,6 @@
     - { name: ldap, become: yes, become_user: ldapadmin, become_method: sudo }
   tags:
     - ldap
-
-- name: phpldapadmin
-  hosts: all
-  become: yes
-  roles:
-    - { name: phpldapadmin, become: yes, become_user: ldapadmin, become_method: sudo }
-  tags:
-    - phpldapadmin
 
 - name: kerberos
   hosts: all

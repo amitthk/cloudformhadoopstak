@@ -19,6 +19,7 @@ parameters {
     string(name: 'SPOT_PRICE', defaultValue: '0.005', description: 'Spot price')
     string(name: 'AWS_DEFAULT_REGION', defaultValue: 'ap-southeast-1', description: 'AWS default region')
     string(name: 'PLAYBOOK_TAGS', defaultValue: 'all', description: 'playbook tags to run')
+    string(name: 'PLAYBOOK_NAMES', defaultValue: 'main.yml', description: 'playbooks to run')
 }
 
 stages{
@@ -33,6 +34,7 @@ stages{
         env.PLAYBOOK_TAGS = "$params.PLAYBOOK_TAGS"
         env.STACK_NAME = "$params.STACK_NAME"
         env.AWS_DEFAULT_REGION = "$params.AWS_DEFAULT_REGION"
+        env.PLAYBOOK_NAMES = "$params.PLAYBOOK_NAMES"
 
         env.APP_BASE_DIR = pwd()
         env.GIT_HASH = sh (script: "git rev-parse --short HEAD", returnStdout: true)
@@ -92,10 +94,13 @@ EOF
             }
         }
         steps{
-                withCredentials([sshUserPrivateKey(credentialsId: "cdhstack_admin.pem", keyFileVariable: 'cdhstack_key')]) {
+                withCredentials([sshUserPrivateKey(credentialsId: "cdhstack_key_cred", keyFileVariable: 'cdhstack_key')]) {
         sh '''#!/bin/bash -xe
         cd $APP_BASE_DIR
-        ansible-playbook -vv -i hosts --tags $PLAYBOOK_TAGS --private-key ${cdhstack_key} main.yml
+        for playbook in ${PLAYBOOK_NAMES//,/ }
+        do
+            ansible-playbook -vv -i hosts --tags $PLAYBOOK_TAGS --private-key ${cdhstack_key} ${playbook}
+        done
         '''
                 }
         }
