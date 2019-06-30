@@ -1,6 +1,6 @@
 ---
-RANDOM_PASSWD: |
-  "{{ '%Y%m%d%H%M%S' | strftime(ansible_date_time.epoch) | password_hash('sha512') | password_hash('sha512') }}"
+time_stamp: "{{'%Y%m%d%H%M%S' | strftime(ansible_date_time.epoch)}}"
+RANDOM_PASSWD: "{{ time_stamp | password_hash('sha512',time_stamp) }}"
 service_accounts:
   - hdfs
   - spark
