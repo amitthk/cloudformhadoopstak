@@ -21,3 +21,9 @@ openjdk_version: 1.8.0
 start_hdfs_services: 'no'
 alluxio_mirror_url: http://jvcdp.mywire.org/alluxio
 alluxio_version: '1.8.1'
+
+krb_default_realm: amitthk.mywire.org
+ldap_server_rootpw: changethis
+krb_kdc_root_db_pw: "{{ldap_server_rootpw}}"
+mariadb_root_password: "{{ldap_server_rootpw}}"
+mariadb_scm_password: "{{ldap_server_rootpw}}"

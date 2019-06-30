@@ -32,7 +32,11 @@
     dest: /var/kerberos/krb5kdc/kadm5.acl
 
 - name: create the kdc database
-  shell: "kdb5_util create -r {{krb_default_realm|upper}} -s"
+  expect:
+    command: "kdb5_util create -r {{krb_default_realm|upper}} -s"
+    responses:
+      (?i)Enter KDC database master key: "{{krb_kdc_root_db_pw}}"
+      (?i)Re-enter KDC database master key to verify: "{{krb_kdc_root_db_pw}}"
 
 - name: enable the "{{item}}" service
   service:

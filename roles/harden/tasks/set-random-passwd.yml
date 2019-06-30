@@ -7,6 +7,11 @@
   debug:
     var: RANDOM_PASSWD
 
+- name: "Save the passwords to local dir for future reference"
+  copy:
+    content: "{{item}} :  {{RANDOM_PASSWD}}"
+    dest: "/root/{{item}}_password"
+
 - name: "Set the password for {{item}}"
   user:
     name: "{{item}}"
