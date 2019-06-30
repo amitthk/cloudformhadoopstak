@@ -5,7 +5,7 @@
 
 - name: "Save the passwords to local dir for future reference"
   copy:
-    content: "{{item}} :  {{RANDOM_PASSWD}}"
+    content: "{{item}} :  {{time_stamp}}"
     dest: "/root/{{item}}_password"
 
 - name: "Set the password for {{item}}"
