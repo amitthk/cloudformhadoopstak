@@ -1,5 +1,5 @@
 - name: harden
-  gather_facts: no
+  gather_facts: yes
   hosts: all
   roles:
     - { name: harden, become: yes, become_user: root, become_method: sudo }
