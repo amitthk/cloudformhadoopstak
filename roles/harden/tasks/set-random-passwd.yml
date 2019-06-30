@@ -1,14 +1,14 @@
 ---
 - name: display the password in build. Note it carefully. (Not in Prod. We must lodge it into Vault)
   debug:
-    var: RANDOM_PASSWD
+    var: harden_default_password
 
 - name: "Save the passwords to local dir for future reference"
   copy:
-    content: "{{item}} :  {{time_stamp}}"
+    content: "{{item}} :  {{harden_default_password}}"
     dest: "/root/{{item}}_password"
 
 - name: "Set the password for {{item}}"
   user:
     name: "{{item}}"
-    password: "{{RANDOM_PASSWD}}"
+    password: "{{HARDEN_PASSWD_HASH}}"

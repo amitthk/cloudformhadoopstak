@@ -1,7 +1,7 @@
 ---
 time_stamp: "{{'%Y%m%d%H%M%S' | strftime(ansible_date_time.epoch)}}"
 harden_default_password: "{{time_stamp}}"
-RANDOM_PASSWD: "{{ harden_default_password | password_hash('sha512',harden_default_password) }}"
+HARDEN_PASSWD_HASH: "{{ harden_default_password | password_hash('sha512',harden_default_password) }}"
 service_accounts:
   - hdfs
   - spark
