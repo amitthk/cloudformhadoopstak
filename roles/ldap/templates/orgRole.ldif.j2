@@ -4,6 +4,6 @@ objectclass: organization
 o: {{ldap_server_domain_name}}
 dc: amitthk
 
-dn: cn=admin,{{ldap_root_dn_suffix}}
+dn: cn={{ldap_adm_id}},{{ldap_root_dn_suffix}}
 objectclass: organizationalRole
-cn: admin
+cn: {{ldap_adm_id}}

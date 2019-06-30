@@ -14,16 +14,16 @@
   shell: slappasswd -s {{ ldap_server_rootpw }} 
   register: root_password
 
-- name: "Ensure group {{ ldap_server_user }} exists"
+- name: "Ensure group {{ ldap_adm_id }} exists"
   group:
-    name: "{{ ldap_server_user }}"
+    name: "{{ ldap_adm_id }}"
     state: present
 
-- name: "Add the user {{ ldap_server_user }}"
+- name: "Add the user {{ ldap_adm_id }}"
   user:
-    name: "{{ ldap_server_user }}"
+    name: "{{ ldap_adm_id }}"
     shell: /bin/bash
-    groups: "{{ ldap_server_user }}"
+    groups: "{{ ldap_adm_id }}"
     state: present
 
 #Todo: setting the permission to 777 for now to make slapd work. must run as proper user
@@ -33,8 +33,8 @@
     state: directory
     mode: 0777
     recurse: yes
-    owner: "{{ ldap_server_user }}"
-    group: "{{ ldap_server_user }}"
+    owner: "{{ ldap_adm_id }}"
+    group: "{{ ldap_adm_id }}"
 
 - name: generate the root passwd hash
   command: slappasswd -h {{ ldap_password_hash_type }} -s {{ ldap_server_rootpw }}

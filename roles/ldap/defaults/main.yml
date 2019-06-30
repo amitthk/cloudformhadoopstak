@@ -4,3 +4,4 @@ ldap_server_domain_name: amitthk.mywire.org
 ldap_server_enable_ssl: false
 ldap_root_dn_suffix: "dc={{ ldap_server_domain_name.split('.')[0] }},dc={{ ldap_server_domain_name.split('.')[1] }},dc={{ ldap_server_domain_name.split('.')[2] }}"
 ldap_password_hash_type: "{SSHA}"
+ldap_adm_id: ldapadm

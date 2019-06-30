@@ -9,4 +9,3 @@ ldap_server_pkgs:
   - openssl
 
 ldap_server_app_path: "/etc/openldap/"
-ldap_server_user: ldapadmin
