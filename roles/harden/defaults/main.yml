@@ -1,4 +1,6 @@
 ---
+RANDOM_PASSWORD: |
+  "{{ ansible_date_time.iso8601_basic | password_hash('sha512') | password_hash('sha512') }}"
 service_accounts:
   - hdfs
   - spark

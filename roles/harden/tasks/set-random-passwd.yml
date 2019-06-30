@@ -1,8 +1,4 @@
 ---
-- name: generate a random password
-  set_fact:
-    RANDOM_PASSWD: "{{ ansible_fqdn | password_hash('sha512') | password_hash('sha512') }}"
-
 - name: display the password in build. Note it carefully. (Not in Prod. We must lodge it into Vault)
   debug:
     var: RANDOM_PASSWD
