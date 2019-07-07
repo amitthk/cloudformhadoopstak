@@ -16,6 +16,12 @@
   become_user: "{{ansible_become_user}}"
   become_method: "{{ansible_become_method}}"
 
+- name: install the python expect 
+  pip:
+    name: 
+      - pexpect
+    state: present
+
 - name: Copy the krb5.conf
   template:
     src: krb5.conf.j2
