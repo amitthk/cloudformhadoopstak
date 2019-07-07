@@ -1,8 +1,11 @@
+#empty line before each dn: entry
+
 dn: {{ldap_root_dn_suffix}}
 objectclass: dcObject
 objectclass: organization
 o: {{ldap_server_domain_name}}
 dc: ldap
+
 dn: cn={{ldap_adm_id}},{{ldap_root_dn_suffix}}
 objectclass: organizationalRole
 cn: {{ldap_adm_id}}
