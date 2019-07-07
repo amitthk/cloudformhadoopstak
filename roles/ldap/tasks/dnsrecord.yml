@@ -15,6 +15,7 @@
       ttl: 7200
       value:
         - "{{ldap_host_ip}}"
+      overwrite: yes
       wait: yes
       aws_access_key: "{{AWS_ACCESS_KEY_ID}}"
       aws_secret_key: "{{AWS_SECRET_ACCESS_KEY}}"
