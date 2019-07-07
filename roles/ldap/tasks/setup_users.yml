@@ -1,7 +1,15 @@
 ---
-- name: Ensure the boto is installed
+- name: install the required yum packages
+  yum:
+    name: 
+      - openldap-devel
+      - python-devel
+    state: present
+
+- name: Ensure the python-ldap is installed
   pip:
     name:
+      - setuptools
       - python-ldap
     state: present
 
