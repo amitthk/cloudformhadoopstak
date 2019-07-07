@@ -94,7 +94,11 @@ EOF
             }
         }
         steps{
-                withCredentials([sshUserPrivateKey(credentialsId: "cdhstack_key_cred", keyFileVariable: 'cdhstack_key')]) {
+                withCredentials([sshUserPrivateKey(credentialsId: "cdhstack_key_cred", keyFileVariable: 'cdhstack_key'),
+                [$class: 'AmazonWebServicesCredentialsBinding', 
+                accessKeyVariable: 'AWS_ACCESS_KEY_ID', 
+                credentialsId: "${repo_bucket_credentials_id}", 
+                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
         sh '''#!/bin/bash -xe
         cd $APP_BASE_DIR
         for playbook in ${PLAYBOOK_NAMES//,/ }
