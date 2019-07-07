@@ -5,16 +5,8 @@
     name: "{{ ldap_server_pkgs }}"
     state: installed
 
-- name: ensure the dns record exist for ldap
-  route53:
-      state: present
-      zone: "{{root_dns_hosted_zone}}"
-      record: "{{krb_default_realm}}"
-      type: A
-      ttl: 7200
-      value:
-        - "{{ldap_host_ip}}"
-      wait: yes
+- name: Include the dns record task
+  include_tasks: dnsrecord.yml
 
 - name: Delete the configuration directory
   file: 
