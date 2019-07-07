@@ -103,7 +103,10 @@ EOF
         cd $APP_BASE_DIR
         for playbook in ${PLAYBOOK_NAMES//,/ }
         do
-            ansible-playbook -vv -i hosts --tags $PLAYBOOK_TAGS --private-key ${cdhstack_key} ${playbook}
+            ansible-playbook -vv -i hosts --tags $PLAYBOOK_TAGS --private-key ${cdhstack_key} \
+            -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" \
+            -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" \
+            ${playbook}
         done
         '''
                 }

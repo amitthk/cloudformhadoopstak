@@ -3,6 +3,6 @@
   hosts: all
   become: yes
   roles:
-    - { name: ldap, become: yes, become_user: ldapadmin, become_method: sudo }
+    - { name: ldap, become: yes, become_user: ldapadmin, become_method: sudo, AWS_ACCESS_KEY_ID: "{{AWS_ACCESS_KEY_ID}}", AWS_SECRET_ACCESS_KEY: "{{AWS_SECRET_ACCESS_KEY}}" }
   tags:
     - ldap
