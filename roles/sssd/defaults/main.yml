@@ -8,4 +8,4 @@ sssd_packages:
   - realmd
   - adcli
 
-krb_default_realm: amitthk.mywire.org
+krb_default_realm: ldap.amitthk.com

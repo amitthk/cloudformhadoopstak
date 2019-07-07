@@ -23,10 +23,14 @@ alluxio_mirror_url: http://jvcdp.mywire.org/alluxio
 alluxio_version: '1.8.1'
 
 ldap_adm_id: ldapadm
-krb_default_realm: amitthk.mywire.org
+root_dns_hosted_zone: amitthk.com
+krb_default_realm: ldap.amitthk.com
 ldap_server_rootpw: changethis
 krb_kdc_root_db_pw: "{{ldap_server_rootpw}}"
 mariadb_root_password: "{{ldap_server_rootpw}}"
 mariadb_scm_password: "{{ldap_server_rootpw}}"
 time_stamp: "{{'%Y%m%d%H%M%S' | strftime(ansible_date_time.epoch)}}"
 harden_default_password: "{{time_stamp}}"
+
+#the inventory contains the ips. Take out the first ip in the list
+ldap_host_ip: "hostvars[groups['ldap'][0]]['inventory_hostname']"
