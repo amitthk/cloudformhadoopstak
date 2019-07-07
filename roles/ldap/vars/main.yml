@@ -8,4 +8,4 @@ ldap_server_pkgs:
   - libselinux-python
   - openssl
 
-ldap_server_app_path: "/etc/openldap/"
+ldap_server_app_path: "/etc/openldap"
