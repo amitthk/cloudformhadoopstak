@@ -1,4 +1,10 @@
 ---
+- name: Ensure the boto is installed
+  pip:
+    name:
+      - python-ldap
+    state: present
+
 - name: Make sure we have an admin user
   ldap_entry:
     dn: cn={{ldap_adm_id}},{{ldap_root_dn_suffix}}
