@@ -23,6 +23,8 @@ common_yum_packages:
   - mysql-connector-java
   - firewalld
   - R
+  - krb5-workstation
+  - krb5-libs
 
 cloudera_ports:
   - 7180
