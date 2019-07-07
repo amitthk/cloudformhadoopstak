@@ -12,7 +12,7 @@
       zone: "{{root_dns_hosted_zone}}"
       record: "{{krb_default_realm}}"
       type: A
-      ttl: 7200
+      ttl: 600
       value:
         - "{{ldap_host_ip}}"
       overwrite: yes
