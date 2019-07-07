@@ -1,0 +1,39 @@
+---
+- name: install the required yum packages
+  yum:
+    name: 
+      - openldap-devel
+      - python-devel
+    state: present
+
+- name: Ensure the python-ldap is installed
+  pip:
+    name:
+      - setuptools
+      - python-ldap
+    state: present
+
+- name: Make sure the org exist
+  ldap_entry:
+    dn: {{ldap_root_dn_suffix}}
+    objectClass:
+      - dcObject
+      - organization
+
+- name: Make sure we have an admin user
+  ldap_entry:
+    dn: cn={{ldap_adm_id}},{{ldap_root_dn_suffix}}
+    objectClass:
+      - simpleSecurityObject
+      - organizationalRole
+    attributes:
+      description: An LDAP administrator
+      userPassword: "{{ ldap_rootpw_hash.stdout }}"
+
+- name: Make sure we have a parent entry for users
+  ldap_entry:
+    dn: ou={{item}},{{ldap_root_dn_suffix}}
+    objectClass: organizationalUnit
+  with_items:
+    - People
+    - Groups
