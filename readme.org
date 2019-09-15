@@ -3,4 +3,12 @@
 aws cloudformation create-stack --stack-name atk-test --template-body file://cloudformation-stack.yml --parameters file://cf-params.json
 
 aws cloudformation delete-stack --stack-name atk-test
+
+#+END_SRC
+
+With Profile: 
+
+#+BEGIN_SRC 
+aws --profile=amitthk_deployadmin cloudformation create-stack --stack-name=dev --template-body file://cloudformation-stack.yml --parameters file://cf-params.json
+
 #+END_SRC

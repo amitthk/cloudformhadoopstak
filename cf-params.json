@@ -6,7 +6,7 @@
       "ParameterValue": "t2.micro"
     },
     {"ParameterKey": "ImageId",
-        "ParameterValue": "ami-8e0205f2"
+        "ParameterValue": "ami-0b4dd9d65556cac22"
     }
 ]
   
