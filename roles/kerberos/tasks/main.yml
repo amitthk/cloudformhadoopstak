@@ -58,3 +58,10 @@
   with_items:
     - krb5kdc.service
     - kadmin.service
+
+- name: add the admin principal
+  expect:
+    command: "kadmin.local -q 'addprinc {{kdc_admin_user}}/admin'"
+    responses:
+      (?i)Enter password for principal: "{{krb_kdc_root_db_pw}}"
+      (?i)Re-enter password for principal: "{{krb_kdc_root_db_pw}}"
