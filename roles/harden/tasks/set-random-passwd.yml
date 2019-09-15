@@ -11,4 +11,4 @@
 - name: "Set the password for {{item}}"
   user:
     name: "{{item}}"
-    password: "{{HARDEN_PASSWD_HASH}}"
+    password: "{{harden_default_password}}"
