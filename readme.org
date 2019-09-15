@@ -11,4 +11,6 @@ With Profile:
 #+BEGIN_SRC 
 aws --profile=amitthk_deployadmin cloudformation create-stack --stack-name=dev --template-body file://cloudformation-stack.yml --parameters file://cf-params.json
 aws --profile=amitthk_deployadmin ec2 describe-instances --filters Name=tag:Name,Values=dev --query "Reservations[*].Instances[*].PublicIpAddress" --output=text >> hosts
+
+aws --profile=amitthk_deployadmin cloudformation delete-stack --stack-name=dev
 #+END_SRC
