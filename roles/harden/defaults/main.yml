@@ -12,4 +12,4 @@ service_accounts:
   - jupyter
   - dbadmin
   - ldapadmin
-  - kerberos
+  - krbadmin
