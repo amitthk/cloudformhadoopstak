@@ -14,3 +14,35 @@
     - { name: db, become: yes, become_user: dbadmin, become_method: sudo }
   tags:
     - db
+
+- name: zookeeper
+  hosts: all
+  become: yes
+  roles:
+    - { name: zookeeper, become: yes, become_user: zookeeper, become_method: sudo }
+  tags:
+    - zookeeper
+
+- name: hadoop
+  hosts: all
+  become: yes
+  roles:
+    - { name: hadoop, become: yes, become_user: hdfs, become_method: sudo }
+  tags:
+    - hadoop
+
+- name: spark
+  hosts: all
+  become: yes
+  roles:
+    - { name: spark, become: yes, become_user: spark, become_method: sudo }
+  tags:
+    - spark
+
+- name: hive
+  hosts: all
+  become: yes
+  roles:
+    - { name: hive, become: yes, become_user: hive, become_method: sudo }
+  tags:
+    - hive

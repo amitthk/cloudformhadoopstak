@@ -1,2 +1,130 @@
 ---
-# tasks file for hadoop
+
+- name: ensure hadoop root directoy
+  file:
+    path: '{{install_base_dir}}'
+    state: directory
+    mode: 0777
+
+- name: download Hadoop
+  get_url:
+    url: '{{ hadoop_url }}'
+    dest: /tmp/{{ hadoop_tar }}
+    mode: 0644
+
+- name: untar 
+  unarchive:
+    remote_src: yes
+    dest: '{{ install_base_dir }}'
+    src: /tmp/{{ hadoop_tar }}
+    creates: '{{ hadoop_target_dir }}'
+
+- name: symlink
+  file:
+    state: link
+    src: '{{ hadoop_target_dir }}'
+    dest: '{{ hadoop_link_dir }}'
+
+# - name: symlink
+#   file:
+#     state: link
+#     src: '{{ hadoop_target_dir }}'
+#     dest: '{{install_base_dir}}/{{ hadoop_dist }}'
+
+# setup the configs
+- name: include Hadoop in default PATH
+  template:
+    src: 'hadoop.sh.j2'
+    dest: '/etc/profile.d/hadoop.sh'
+    mode: '0644'
+- name: create hadoop-env.sh for hadoop
+  template:
+    src: hadoop-env.j2
+    dest: "{{ install_base_dir }}/hadoop-{{ hadoop_version }}/etc/hadoop/hadoop-env.sh"
+    owner: "{{ ansible_ssh_user }}"
+    mode: 0644
+- name: create core-site.xml for hadoop
+  template:
+    src: core-site.j2
+    dest: "{{ install_base_dir }}/hadoop-{{ hadoop_version }}/etc/hadoop/core-site.xml"
+    owner: "{{ ansible_ssh_user }}"
+    mode: 0644
+- name: create slaves for hadoop
+  template: 
+    src: slaves 
+    dest: "{{ install_base_dir }}/hadoop-{{ hadoop_version }}/etc/hadoop/slaves" 
+    owner: "{{ ansible_ssh_user }}"
+    mode: 0644
+- name: create hdfs-site.xml for hadoop
+  template: 
+    src: hdfs-site.j2 
+    dest: "{{ install_base_dir }}/hadoop-{{ hadoop_version }}/etc/hadoop/hdfs-site.xml" 
+    owner: "{{ ansible_ssh_user }}" 
+    mode: 0644
+- name: create yarn-env.sh for hadoop
+  template: 
+    src: yarn-env.j2 
+    dest: "{{ install_base_dir }}/hadoop-{{ hadoop_version }}/etc/hadoop/yarn-env.sh" 
+    owner: "{{ ansible_ssh_user }}" 
+    mode: 0644
+- name: create yarn-site.xml for hadoop
+  template: 
+    src: yarn-site.j2 
+    dest: "{{ install_base_dir }}/hadoop-{{ hadoop_version }}/etc/hadoop/yarn-site.xml" 
+    owner: "{{ ansible_ssh_user }}" 
+    mode: 0644
+- name: create mapred-site.xml for hadoop
+  template: 
+    src: mapred-site.j2 
+    dest: "{{ install_base_dir }}/hadoop-{{ hadoop_version }}/etc/hadoop/mapred-site.xml" 
+    owner: "{{ ansible_ssh_user }}" 
+    mode: 0644
+- name: create capacity-scheduler.xml for hadoop
+  template: 
+    src: capacity-scheduler.xml 
+    dest: "{{ install_base_dir }}/hadoop-{{ hadoop_version }}/etc/hadoop/capacity-scheduler.xml" 
+    owner: "{{ ansible_ssh_user }}" 
+    mode: 0644
+- name: create hive-site.j2 for hadoop
+  template: 
+    src: hive-site.j2 
+    dest: "{{ install_base_dir }}/hadoop-{{ hadoop_version }}/etc/hadoop/hive-site.xml" 
+    owner: "{{ ansible_ssh_user }}" 
+    mode: 0644
+
+# start hdfs and yarn
+- name: start the hdfs namenode
+  action: command {{ install_base_dir }}/hadoop-{{ hadoop_version }}/sbin/hadoop-daemon.sh --script hdfs start namenode
+  when: inventory_hostname in groups['masters'] and start_hdfs_services=='yes'
+  tags:
+    - masters
+
+- name: start the hdfs secondarynamenode
+  action: command {{ install_base_dir }}/hadoop-{{ hadoop_version }}/sbin/hadoop-daemon.sh start secondarynamenode
+  when: inventory_hostname in groups['masters'] and start_hdfs_services=='yes'
+  tags:
+    - masters
+
+- name: start the hdfs datanodes
+  action: command {{ install_base_dir }}/hadoop-{{ hadoop_version }}/sbin/hadoop-daemon.sh --script hdfs start datanode
+  when: inventory_hostname in groups['workers'] and start_hdfs_services=='yes'
+  environment:
+    JAVA_HOME: '/usr/lib/jvm/java-{{openjdk_version}}'
+  tags:
+    - workers
+  
+- name: start the yarn resourcemanager
+  action: command {{ install_base_dir }}/hadoop-{{ hadoop_version }}/sbin/yarn-daemon.sh start resourcemanager
+  when: inventory_hostname in groups['masters'] and start_hdfs_services=='yes'
+  environment:
+    JAVA_HOME: '/usr/lib/jvm/java-{{openjdk_version}}'
+  tags:
+    - masters
+
+- name: start the yarn nodemanagers
+  action: command {{ install_base_dir }}/hadoop-{{ hadoop_version }}/sbin/yarn-daemon.sh start nodemanager
+  when: inventory_hostname in groups['workers'] and start_hdfs_services=='yes'
+  environment:
+    JAVA_HOME: '/usr/lib/jvm/java-{{openjdk_version}}'
+  tags:
+    - workers

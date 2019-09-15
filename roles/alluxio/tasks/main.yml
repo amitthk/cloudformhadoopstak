@@ -1,0 +1,54 @@
+---
+- name: download alluxio
+  get_url:
+    url: '{{ alluxio_url }}'
+    dest: /tmp/{{ alluxio_tar }}
+    mode: 0644
+- name: untar 
+  unarchive:
+    remote_src: yes
+    dest: '{{ install_base_dir }}'
+    src: /tmp/{{ alluxio_tar }}
+    creates: '{{ alluxio_target_dir }}'
+- name: symlink
+  file:
+    state: link
+    src: '{{ alluxio_target_dir }}'
+    dest: '{{ alluxio_link_dir }}'
+- name: include alluxio in default PATH
+  template:
+    src: 'alluxio.sh.j2'
+    dest: '/etc/profile.d/alluxio.sh'
+    mode: '0644'
+- name: copy alluxio-site.properties for alluxio
+  template: 
+    src: 'alluxio-site.properties.j2' 
+    dest: '{{ alluxio_target_dir }}/conf/alluxio-site.properties' 
+    owner: '{{ ansible_ssh_user }}' 
+    mode: 0644
+- name: format alluxio
+  action: command {{ install_base_dir }}/alluxio-{{ alluxio_version }}/bin/alluxio format
+  when: inventory_hostname in groups['masters'] and start_hdfs_services=='yes'
+  environment:
+    JAVA_HOME: '/usr/lib/jvm/java-{{openjdk_version}}'
+  tags:
+    - masters
+- name: start master
+  action: command {{ install_base_dir }}/alluxio-{{ alluxio_version }}/bin/alluxio-start.sh master
+  when: inventory_hostname in groups['masters'] and start_hdfs_services=='yes'
+  environment:
+    JAVA_HOME: '/usr/lib/jvm/java-{{openjdk_version}}'
+  tags:
+    - masters
+- name: start workers
+  action: command {{ install_base_dir }}/alluxio-{{ alluxio_version }}/bin/alluxio-start.sh worker
+  when: inventory_hostname in groups['workers'] and start_hdfs_services=='yes'
+  environment:
+    JAVA_HOME: '/usr/lib/jvm/java-{{openjdk_version}}'
+  tags:
+    - workers
+# - name: mount s3 bucket
+#   action: command {{ install_base_dir }}/alluxio-{{ alluxio_version }}/bin/alluxio fs mount --readonly alluxio://localhost:19998/mnt/s3 s3a://alluxio-quick-start/data
+#   when: inventory_hostname in groups['masters'] and start_hdfs_services=='yes'
+#   tags:
+#     - masters

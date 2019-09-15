@@ -1,4 +1,6 @@
-export SPARK_HOME=/opt/spark-2.4.2-bin-hadoop2.7
-export CLASSPATH=.:$JAVA_HOME/jre/lib:$JAVA_HOME/lib:$JAVA_HOME/lib/tools.jar
+export SPARK_HOME={{install_base_dir}}/spark
 
-export PATH=$SPARK_HOME/bin:$SPARK_HOME/sbin:$PATH
+export PATH=$PATH:$SPARK_HOME/bin
+{% if spark_envs is defined %}{% for key, value in spark_envs.iteritems() %}
+export {{key}}={{value}}
+{% endfor %}{% endif %}

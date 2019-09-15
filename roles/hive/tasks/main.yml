@@ -1,0 +1,34 @@
+---
+- name: download hive
+  get_url:
+    url: '{{ hive_url }}'
+    dest: /tmp/{{ hive_tar }}
+    mode: 0644
+- name: untar 
+  unarchive:
+    remote_src: yes
+    dest: '{{ install_base_dir }}'
+    src: /tmp/{{ hive_tar }}
+    creates: '{{ hive_target_dir }}'
+- name: symlink
+  file:
+    state: link
+    src: '{{ hive_target_dir }}'
+    dest: '{{ hive_link_dir }}'
+- name: include hive in default PATH
+  template:
+    src: 'hive.sh.j2'
+    dest: '/etc/profile.d/hive.sh'
+    mode: '0644'
+- name: copy hive-site.xml for hive
+  template: 
+    src: 'hive-site.j2' 
+    dest: '{{ hive_target_dir }}/conf/hive-site.xml' 
+    owner: '{{ ansible_ssh_user }}' 
+    mode: 0644
+- name: copy mysql driver into hive classpath
+  copy: 
+    src: 'mysql-connector-java-5.1.24-bin.jar'
+    dest: '{{ hive_target_dir }}/lib/mysql-connector-java-5.1.24-bin.jar' 
+    owner: '{{ ansible_ssh_user }}' 
+    mode: 0644

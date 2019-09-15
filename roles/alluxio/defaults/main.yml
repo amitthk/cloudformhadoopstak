@@ -1,0 +1,7 @@
+---
+alluxio_dist: 'alluxio-{{ alluxio_version }}'
+alluxio_tar: alluxio-{{ alluxio_version }}-bin.tar.gz
+# alluxio_mirror_url: http://downloads.alluxio.org/downloads/files
+alluxio_url: '{{ alluxio_mirror_url }}/{{ alluxio_version }}/{{alluxio_tar}}'
+alluxio_target_dir: '{{ install_base_dir }}/alluxio-{{ alluxio_version }}'
+alluxio_link_dir: '{{install_base_dir}}/alluxio'

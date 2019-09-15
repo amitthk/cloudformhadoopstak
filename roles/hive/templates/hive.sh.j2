@@ -1,0 +1,5 @@
+export JAVA_HOME=/usr/lib/jvm/java-{{openjdk_version}}
+export HIVE_HOME={{install_base_dir}}/hive
+export PATH=$PATH:$HIVE_HOME/bin
+export CLASSPATH=$CLASSPATH:$HADOOP_HOME/lib/*:.
+export CLASSPATH=$CLASSPATH:{{install_base_dir}}/hive/lib/*:.

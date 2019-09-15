@@ -1,0 +1,7 @@
+---
+hive_dist: 'hive-{{ hive_version }}'
+hive_tar: apache-hive-{{ hive_version }}-bin.tar.gz
+# hive_mirror_url: http://archive.apache.org/dist/hive
+hive_url: '{{ hive_mirror_url }}/{{ hive_dist }}/{{hive_tar}}'
+hive_target_dir: '{{ install_base_dir }}/apache-hive-{{ hive_version }}-bin'
+hive_link_dir: '{{install_base_dir}}/hive'

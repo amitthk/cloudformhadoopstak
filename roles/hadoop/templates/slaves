@@ -1,0 +1,1 @@
+{{ groups['workers'] | map('extract', hostvars, ['ansible_eth0', 'ipv4', 'address']) | join('\n') }}

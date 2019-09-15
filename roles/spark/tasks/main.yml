@@ -1,2 +1,66 @@
 ---
-# tasks file for spark
+- name: ensure spark root directoy
+  file:
+    path: '{{install_base_dir}}'
+    state: directory
+    mode: 0777
+
+
+- name: download Spark
+  get_url:
+    url: '{{spark_url}}'
+    dest: '/tmp/{{ spark_tgz }}'
+    mode: '0644'
+  
+- name: untar 
+  unarchive:
+    remote_src: yes
+    dest: '{{install_base_dir}}'
+    src: /tmp/{{spark_tgz}}
+    creates: '{{spark_target_dir}}'
+
+- name: symlink
+  file:
+    state: link 
+    src: '{{spark_target_dir}}'
+    dest: '{{spark_link_dir}}'
+
+# - name: copy spark.env
+#   template:
+#     src: 'spark.env.j2'
+#     dest: '{{spark_target_dir}}/spark.env'
+#     mode: '644'
+
+- name: copy env template
+  template:
+    src: 'spark-env.sh.j2'
+    dest: '{{install_base_dir}}/spark/conf/spark-env.sh'
+    mode: '755'
+
+- name: copy spark.sh
+  template:
+    src: 'spark.sh.j2'
+    dest: '/etc/profile.d/spark.sh'
+    mode: '644'
+
+- name: start spark master
+  action: command {{ install_base_dir }}/spark-{{ spark_version }}-bin-{{ spark_hadoop_version }}/sbin/start-master.sh
+  environment:
+    SPARK_LOG_DIR: "{{ install_base_dir }}/spark/log"
+    SPARK_WORKER_DIR: "{{ install_base_dir }}/spark/work"
+    SPARK_LOCAL_DIRS: "{{ install_base_dir }}/spark/data"
+    HADOOP_HOME: "{{install_base_dir}}/hadoop"
+  when: inventory_hostname in groups['masters']
+  tags:
+    - masters
+
+- name: start the spark slaves
+  action: command {{ install_base_dir }}/spark-{{ spark_version }}-bin-{{ spark_hadoop_version }}/sbin/start-slave.sh spark://{{ hostvars[groups['masters'][0]]['inventory_hostname']}}:7077
+  environment:
+    SPARK_LOG_DIR: "{{ install_base_dir }}/spark/log"
+    SPARK_WORKER_DIR: "{{ install_base_dir }}/spark/work"
+    SPARK_LOCAL_DIRS: "{{ install_base_dir }}/spark/data"
+    HADOOP_HOME: "{{install_base_dir}}/hadoop"
+  when: inventory_hostname in groups['workers']
+  tags:
+    - workers

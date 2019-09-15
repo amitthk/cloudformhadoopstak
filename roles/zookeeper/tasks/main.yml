@@ -1,0 +1,82 @@
+---
+# tasks file for zookeeper
+- name: ensure zookeeper root directoy
+  file:
+    path: '{{install_base_dir}}'
+    state: directory
+    mode: 0777
+
+- name: download zookeeper
+  get_url:
+    url: '{{ zookeeper_url }}'
+    dest: /tmp/{{ zookeeper_tar }}
+    mode: 0644
+
+- name: untar 
+  unarchive:
+    remote_src: yes
+    dest: '{{ install_base_dir }}'
+    src: /tmp/{{ zookeeper_tar }}
+    creates: '{{ zookeeper_target_dir }}'
+
+- name: symlink
+  file:
+    state: link
+    src: '{{ zookeeper_target_dir }}'
+    dest: '{{ zookeeper_link_dir }}'
+
+- group: name=zookeeper system=yes
+- user: name=zookeeper group=zookeeper system=yes
+
+- name: zookeeper directory ownership
+  file: path={{zookeeper_target_dir}} state=directory owner=zookeeper group=zookeeper
+
+- name: "Create zookeeper {{item}} directory."
+  file: path={{item}} state=directory owner=zookeeper group=zookeeper
+  tags: bootstrap
+  with_items:
+    - "{{zkp_data_dir}}"
+    - "{{zkp_log_dir}}"
+
+# - name: symlink
+#   file:
+#     state: link
+#     src: '{{ zookeeper_target_dir }}'
+#     dest: '{{install_base_dir}}/{{ zookeeper_dist }}'
+
+# setup the configs
+- name: include zookeeper in default PATH
+  template:
+    src: 'zookeeper.sh.j2'
+    dest: '/etc/profile.d/zookeeper.sh'
+    mode: '0644'
+
+- name: "setup the {{zookeeper_target_dir}}/conf/zoo.cfg"
+  template:
+    src: 'zoo.cfg.j2'
+    dest: "{{zookeeper_target_dir}}/conf/zoo.cfg"
+    mode: '0644'
+
+- name: "setup the {{zookeeper_target_dir}}/conf/log4j.properties"
+  template:
+    src: 'log4j.properties.j2'
+    dest: "{{zookeeper_target_dir}}/conf/log4j.properties"
+    mode: '0644'
+
+- name: "setup the {{zookeeper_target_dir}}/myid"
+  template:
+    src: 'myid.j2'
+    dest: "{{zkp_data_dir}}/myid"
+    mode: '0644'
+
+- name: start zookeeper
+  shell: "{{zookeeper_target_dir}}/bin/zkServer.sh start"
+
+- name: stop zookeeper
+  shell: "{{zookeeper_target_dir}}/bin/zkServer.sh stop"
+
+- name: Setup the Systemd service
+  template: src=zookeeper.service.j2 dest=/lib/systemd/system/zookeeper.service
+  notify:
+    - Reload systemctl daemon
+    - Restart zookeeper

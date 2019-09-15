@@ -1,0 +1,11 @@
+---
+# vars file for zookeeper
+zookeeper_dist: 'zookeeper-{{ zookeeper_version }}'
+# zookeeper_mirror_url: http://archive.apache.org/dist/zookeeper
+zookeeper_tar: '{{zookeeper_dist}}.tar.gz'
+zookeeper_url: '{{ zookeeper_mirror_url }}/{{ zookeeper_dist }}/{{zookeeper_tar}}'
+install_base_dir: /usr/local
+zookeeper_target_dir : '{{install_base_dir}}/{{zookeeper_dist}}'
+zookeeper_link_dir: '{{install_base_dir}}/zookeeper'
+zkp_data_dir: "{{zookeeper_target_dir}}/data"
+zkp_log_dir: /var/log/zookeeper

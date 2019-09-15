@@ -1,2 +1,8 @@
 ---
-# defaults file for hadoop
+hadoop_dist: 'hadoop-{{ hadoop_version }}'
+# hadoop_mirror_url: http://archive.apache.org/dist/hadoop/common
+hadoop_tar: '{{hadoop_dist}}.tar.gz'
+hadoop_url: '{{ hadoop_mirror_url }}/{{ hadoop_dist }}/{{hadoop_tar}}'
+install_base_dir: /usr/local
+hadoop_target_dir : '{{install_base_dir}}/{{hadoop_dist}}'
+hadoop_link_dir: '{{install_base_dir}}/hadoop'

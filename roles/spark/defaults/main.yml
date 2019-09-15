@@ -1,2 +1,11 @@
----
-# defaults file for spark
+# spark_mirror_url : https://archive.apache.org/dist/spark
+install_base_dir: /usr/local
+spark_name: spark-{{spark_version}}
+spark_hadoop_name: '{{spark_name}}-bin-{{spark_hadoop_version}}'
+spark_tgz : '{{spark_hadoop_name}}.tgz'
+
+spark_url : '{{spark_mirror_url}}/{{spark_name}}/{{spark_tgz}}'
+spark_checksum: '{{spark_checksums[spark_version]}}'
+
+spark_target_dir : '{{install_base_dir}}/{{spark_hadoop_name}}'
+spark_link_dir: '{{install_base_dir}}/spark'
