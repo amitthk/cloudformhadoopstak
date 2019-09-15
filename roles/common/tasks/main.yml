@@ -107,9 +107,17 @@
   shell: hwclock -w
   tags: ntp
 
+- name: copy the krb5 config
+  template:
+    src: krb5.conf.j2
+    dest: /etc/krb5.conf
+    mode: 0755
+
 - name: Open up FirewallD ports for all the services (This will need to be cut down to what's required)
   command: "firewall-cmd --zone=dmz --add-port={{item}}/tcp --permanent"
   with_items:
+    - 88
+    - 749
     - 22
     - "{{cloudera_ports}}"
     - "{{cdh_services_ports}}"
