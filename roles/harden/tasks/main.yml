@@ -64,9 +64,9 @@
 
 - name: remove sudo
   lineinfile:
-    path: "{{item}}"
+    path: "{{item.path}}"
     state: absent
-    regexp: '^%.* ALL=(ALL) NOPASSWD: ALL'
+    regexp: '^%.*NOPASSWD:\s{1,}ALL'
     validate: '/usr/sbin/visudo -cf %s'
-  with_items: "{{ sudoer_files }}"
+  with_items: "{{ sudoer_files.files }}"
 

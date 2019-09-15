@@ -2,6 +2,6 @@
   gather_facts: yes
   hosts: all
   roles:
-    - { name: harden, become: yes, become_user: root, become_method: sudo }
+    - { name: harden }
   tags:
     - harden
