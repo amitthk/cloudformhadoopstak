@@ -1,4 +1,5 @@
 ---
 # defaults file for kerberos
+kdc_admin_user: kdcadmin
 kdc_host_ip: "{{groups['ec2'][0]}}"
 krb_default_realm: ldap.amitthk.com
