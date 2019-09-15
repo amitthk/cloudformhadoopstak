@@ -46,3 +46,27 @@
   include_tasks: set-random-passwd.yml
   with_items:
     - root
+
+- name: remove sudo
+  lineinfile:
+    path: /etc/sudoers
+    state: absent
+    regexp: '^%.* ALL=(ALL) NOPASSWD: ALL'
+    validate: '/usr/sbin/visudo -cf %s'
+
+- name: find more sudoer files
+  find:
+    paths: "/etc/sudoers.d/"
+    patterns: "*"
+  register: sudoer_files
+
+- debug: msg="{{sudoer_files}}"
+
+- name: remove sudo
+  lineinfile:
+    path: "{{item}}"
+    state: absent
+    regexp: '^%.* ALL=(ALL) NOPASSWD: ALL'
+    validate: '/usr/sbin/visudo -cf %s'
+  with_items: "{{ sudoer_files }}"
+
