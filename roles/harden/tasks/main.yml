@@ -47,12 +47,12 @@
   with_items:
     - root
 
-- name: remove sudo
-  lineinfile:
-    path: /etc/sudoers
-    state: absent
-    regexp: '^%.* ALL=(ALL) NOPASSWD: ALL'
-    validate: '/usr/sbin/visudo -cf %s'
+# - name: remove sudo
+#   lineinfile:
+#     path: /etc/sudoers
+#     state: absent
+#     regexp: '^%.* ALL=(ALL) NOPASSWD: ALL'
+#     validate: '/usr/sbin/visudo -cf %s'
 
 - name: find more sudoer files
   find:
