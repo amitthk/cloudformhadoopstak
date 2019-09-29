@@ -1,0 +1,14 @@
+---
+- name: get the key value to variable
+  shell: cat "/home/{{item}}/.ssh/id_rsa"
+  register: key_data
+
+- name: "Save the passwords to local dir for future reference"
+  blockinfile:
+    content: "{{key_data.stdout}}"
+    dest: "{{inventory_dir}}/host_passwords"
+    state: present
+    insertafter: EOF
+    marker: "<!-- {{item}} -->"
+  delegate_to: localhost
+  become: no

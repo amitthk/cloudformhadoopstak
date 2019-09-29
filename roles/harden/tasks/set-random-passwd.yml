@@ -1,14 +1,33 @@
 ---
+- name: ensure passlib exists
+  pip:
+    name: passlib
+    extra_args: --user
+  delegate_to: localhost
+  become: no
+
 - name: display the password in build. Note it carefully. (Not in Prod. We must lodge it into Vault)
   debug:
     var: harden_default_password
-
+    
 - name: "Save the passwords to local dir for future reference"
-  copy:
+  blockinfile:
     content: "{{item}} :  {{harden_default_password}}"
-    dest: "/root/{{item}}_password"
+    dest: "{{inventory_dir}}/host_passwords"
+    state: present
+    insertafter: EOF
+    marker: "<!-- add services ANSIBLE MANAGED BLOCK -->"
+  delegate_to: localhost
+  become: no
+
+- name: generate hash pass
+  delegate_to: localhost
+  command:  python -c "from passlib.hash import sha512_crypt; import getpass; print sha512_crypt.encrypt('{{harden_default_password}}')"
+  register: hash_harden_default_password
+  become: no
+
 
 - name: "Set the password for {{item}}"
   user:
     name: "{{item}}"
-    password: "{{harden_default_password}}"
+    password: "{{hash_harden_default_password.stdout}}"

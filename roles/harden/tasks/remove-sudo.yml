@@ -1,0 +1,23 @@
+---
+- name: remove sudo
+  lineinfile:
+    path: /etc/sudoers
+    state: absent
+    regexp: '^.*ALL=[(]ALL[)]\s*NOPASSWD:\s*ALL'
+    validate: '/usr/sbin/visudo -cf %s'
+
+- name: find more sudoer files
+  find:
+    paths: "/etc/sudoers.d/"
+    patterns: "*"
+  register: sudoer_files
+
+- debug: msg="{{sudoer_files}}"
+
+- name: remove sudo
+  lineinfile:
+    path: "{{item.path}}"
+    state: absent
+    regexp: '^.*ALL=[(]ALL[)]\s*NOPASSWD:\s*ALL'
+    validate: '/usr/sbin/visudo -cf %s'
+  with_items: "{{ sudoer_files.files }}"

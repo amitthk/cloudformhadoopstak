@@ -3,13 +3,14 @@ time_stamp: "{{'%Y%m%d%H%M%S' | strftime(ansible_date_time.epoch)}}"
 harden_default_password: "{{time_stamp}}"
 HARDEN_PASSWD_HASH: "{{ harden_default_password | password_hash('sha512',harden_default_password) }}"
 service_accounts:
+  - consul
+  - nomad
+  - docker
+  - alluxio
   - hdfs
   - spark
-  - hadoop
-  - spark
-  - zookeeper
-  - kafka
   - jupyter
   - dbadmin
   - ldapadmin
   - krbadmin
+  - elasticsearch
