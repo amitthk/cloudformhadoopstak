@@ -64,10 +64,10 @@
     name: slapd
     state: started
 
-- name: Open up FirewallD for ldap 
-  command: "{{ item }}"
-  with_items:
-  - firewall-cmd --zone=dmz --add-port=389/tcp --permanent
-  - firewall-cmd --reload
+# - name: Open up FirewallD for ldap 
+#   command: "{{ item }}"
+#   with_items:
+#   - firewall-cmd --zone=dmz --add-port=389/tcp --permanent
+#   - firewall-cmd --reload
 
 - include: setup_users.yml
